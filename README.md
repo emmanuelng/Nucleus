@@ -1,2 +1,3 @@
 # Nucleus
-A PHP library for creating REST APIs
+
+A PHP library for creating REST APIs.
