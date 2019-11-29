@@ -1,0 +1,20 @@
+{
+    "method": "GET",
+    "url": "/test1",
+    "parameters": {
+        "a": {
+            "type": "string"
+        }
+    },
+    "request": {
+        "b": {
+            "type": "int"
+        }
+    },
+    "response": {
+        "c": {
+            "type": "bool"
+        }
+    },
+    "callback": "functionCallback"
+}

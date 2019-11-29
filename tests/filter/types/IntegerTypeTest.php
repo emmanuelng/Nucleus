@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require_once(__DIR__ . '/../TypeTest.php');
+namespace Tests\Filter\Types;
+
+use Tests\Filter\TypeTest;
 
 class IntegerTypeTest extends TypeTest
 {

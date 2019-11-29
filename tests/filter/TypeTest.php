@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Tests\Filter;
+
 use Nucleus\Filter\Exceptions\InvalidValueException;
 use Nucleus\Filter\Filter;
 use PHPUnit\Framework\TestCase;

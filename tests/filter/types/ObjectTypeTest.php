@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Tests\Filter\Types;
+
 use Nucleus\Filter\Exceptions\MissingPropertyException;
 use Nucleus\Filter\Exceptions\MissingTypeException;
 use Nucleus\Filter\Filter;
