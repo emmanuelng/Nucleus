@@ -8,12 +8,13 @@ use Nucleus\Filter\Exceptions\InvalidValueException;
 use Nucleus\Filter\Type;
 
 /**
- * ### IntegerType class
- *
  * Represents the integer base type.
  */
 class IntegerType implements Type
 {
+    /**
+     * {@inheritDoc}
+     */
     public function filter($value)
     {
         // Only accept integers and strings

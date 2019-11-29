@@ -11,8 +11,6 @@ use Nucleus\Filter\Filter;
 use Nucleus\Filter\Type;
 
 /**
- * ### ObjectType class
- *
  * Represents an object type. An object is an aggregation of base type values
  * and/or other objects. The structure of an object is defined by a schema.
  */
@@ -84,6 +82,9 @@ class ObjectType implements Type
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function filter($value)
     {
         // The value must be an associative array
@@ -108,13 +109,13 @@ class ObjectType implements Type
 
             // Filter value (simple value)
             if (!$isList) {
-                $result[$name] = Filter::value($type, $propVal);
+                $result[$name] = Filter::filterValue($type, $propVal);
                 continue;
             }
 
             // Filter value (list)
             if (is_array($propVal)) {
-                $result[$name] = Filter::list($type, $propVal);
+                $result[$name] = Filter::filterList($type, $propVal);
                 continue;
             }
 

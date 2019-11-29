@@ -8,12 +8,13 @@ use Nucleus\Filter\Exceptions\InvalidValueException;
 use Nucleus\Filter\Type;
 
 /**
- * ### FloatType class
- *
  * Represents the floating point base type.
  */
 class FloatType implements Type
 {
+    /**
+     * {@inheritDoc}
+     */
     public function filter($value)
     {
         // Only accept floats, integers and strings

@@ -39,7 +39,7 @@ class ObjectTypeTest extends TestCase
             'object list'  => [['a' => 1], ['a' => 2]],
         ];
 
-        $filtered = Filter::value($schema, $object);
+        $filtered = Filter::filterValue($schema, $object);
         foreach ($filtered as $key => $value) {
             $this->assertSame($object[$key], $value);
         }
@@ -47,7 +47,7 @@ class ObjectTypeTest extends TestCase
 
     public function testAcceptsObjectsWithMissingOptionalValues() {
         $schema   = ['a' => ['type' => 'int', 'default' => 1]];
-        $filtered = Filter::value($schema, []);
+        $filtered = Filter::filterValue($schema, []);
         $this->assertSame($filtered, ['a' => 1]);
     }
 
@@ -55,13 +55,13 @@ class ObjectTypeTest extends TestCase
     {
         $schema = ['a' => ['type' => 'int']];
         $this->expectException(MissingPropertyException::class);
-        Filter::value($schema, []);
+        Filter::filterValue($schema, []);
     }
 
     public function testThrowsExceptionWhenNoTypeIsDefined()
     {
         $schema = ['a' => []];
         $this->expectException(MissingTypeException::class);
-        Filter::value($schema, []);
+        Filter::filterValue($schema, []);
     }
 }

@@ -8,12 +8,13 @@ use Nucleus\Filter\Exceptions\InvalidValueException;
 use Nucleus\Filter\Type;
 
 /**
- * ### StringType class
- *
  * Represents the string base type.
  */
 class StringType implements Type
 {
+    /**
+     * {@inheritDoc}
+     */
     public function filter($value)
     {
         // Special case: null

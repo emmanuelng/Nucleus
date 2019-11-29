@@ -62,7 +62,7 @@ class FilteredResponse implements Response
     public function setBody(array $data): void
     {
         $schema   = $this->route->responseBody();
-        $filtered = Filter::value($schema, $data);
+        $filtered = Filter::filterValue($schema, $data);
         $this->res->setBody($filtered);
     }
 }

@@ -125,7 +125,7 @@ class FilteredRequest implements Request
         try {
             $schema = $route->parameters();
             $params = $req->parameters();
-            $this->parameters = Filter::value($schema, $params);
+            $this->parameters = Filter::filterValue($schema, $params);
         } catch (MissingPropertyException $e) {
             $msg = 'Missing parameter ' . $e->property();
             throw new BadRequestException($msg);
@@ -147,7 +147,7 @@ class FilteredRequest implements Request
         try {
             $schema = $route->requestBody();
             $body   = $req->body();
-            $this->body = Filter::value($schema, $body);
+            $this->body = Filter::filterValue($schema, $body);
         } catch (MissingPropertyException $e) {
             $msg = 'Missing value ' . $e->property();
             throw new BadRequestException($msg);

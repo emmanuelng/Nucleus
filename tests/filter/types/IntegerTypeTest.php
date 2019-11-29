@@ -8,12 +8,18 @@ use Tests\Filter\TypeTest;
 
 class IntegerTypeTest extends TypeTest
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function type()
     {
         return 'int';
     }
 
-    public function validValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function validValuesProvider(): array
     {
         return [
             "Integers"        => [1, 1],
@@ -21,7 +27,10 @@ class IntegerTypeTest extends TypeTest
         ];
     }
 
-    public function invalidValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function invalidValuesProvider(): array
     {
         return [
             "Booleans"             => [true],

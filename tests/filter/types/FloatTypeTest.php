@@ -8,12 +8,18 @@ use Tests\Filter\TypeTest;
 
 class FloatTypeTest extends TypeTest
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function type()
     {
         return 'float';
     }
 
-    public function validValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function validValuesProvider(): array
     {
         return [
             "Floats"          => [1.5, 1.5],
@@ -23,7 +29,10 @@ class FloatTypeTest extends TypeTest
         ];
     }
 
-    public function invalidValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function invalidValuesProvider(): array
     {
         return [
             "Booleans"             => [true],

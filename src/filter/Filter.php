@@ -26,7 +26,7 @@ final class Filter
      * @param mixed $value The value.
      * @return mixed The filtered value.
      */
-    public static function value($type, $value)
+    public static function filterValue($type, $value)
     {
         $typeObj = self::getType($type);
         return $typeObj->filter($value);
@@ -39,7 +39,7 @@ final class Filter
      * @param mixed $value The value.
      * @return mixed The filtered value.
      */
-    public static function list($type, $value)
+    public static function filterList($type, $value)
     {
         if (!is_iterable($value)) {
             throw new InvalidTypeException($type);
@@ -47,7 +47,7 @@ final class Filter
 
         $result = [];
         foreach ($value as $value) {
-            $result[] = self::value($type, $value);
+            $result[] = self::filterValue($type, $value);
         }
 
         return $result;

@@ -8,12 +8,18 @@ use Tests\Filter\TypeTest;
 
 class BooleanTypeTest extends TypeTest
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function type()
     {
         return 'bool';
     }
 
-    public function validValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function validValuesProvider(): array
     {
         return [
             "Booleans (true)"    => [true, true],
@@ -29,7 +35,10 @@ class BooleanTypeTest extends TypeTest
         ];
     }
 
-    public function invalidValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function invalidValuesProvider(): array
     {
         return [
             "Invalid strings ('abc')" => ['abc'],

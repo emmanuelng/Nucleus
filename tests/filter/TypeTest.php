@@ -10,17 +10,36 @@ use PHPUnit\Framework\TestCase;
 
 abstract class TypeTest extends TestCase
 {
+    /**
+     * Returns the tested type.
+     *
+     * @return string|array
+     */
     abstract protected function type();
-    abstract public function validValues(): array;
-    abstract public function invalidValues(): array;
 
     /**
-     * @dataProvider validValues
+     * Valid values data provider.
+     *
+     * @return array
+     */
+    abstract public function validValuesProvider(): array;
+
+    /**
+     * Invalid values data provider.
+     *
+     * @return array
+     */
+    abstract public function invalidValuesProvider(): array;
+
+    /**
+     * Tests that the filter accepts the valid values.
+     *
+     * @dataProvider validValuesProvider
      */
     public function testAcceptsValidValues($value, $result): void
     {
         try {
-            $filtered = Filter::value($this->type(), $value);
+            $filtered = Filter::filterValue($this->type(), $value);
             $this->assertSame($result, $filtered);
         } catch (InvalidValueException $e) {
             $value = $e->value();
@@ -29,11 +48,13 @@ abstract class TypeTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidValues
+     * Tests that the filter rejects the invalid values.
+     *
+     * @dataProvider invalidValuesProvider
      */
     public function testRejectsInvalidValues($value): void
     {
         $this->expectException(InvalidValueException::class);
-        Filter::value($this->type(), $value);
+        Filter::filterValue($this->type(), $value);
     }
 }

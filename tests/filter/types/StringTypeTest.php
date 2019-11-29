@@ -8,12 +8,18 @@ use Tests\Filter\TypeTest;
 
 class StringTypeTest extends TypeTest
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function type()
     {
         return 'string';
     }
 
-    public function validValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function validValuesProvider(): array
     {
         return [
             "Strings"       => ['abc', 'abc'],
@@ -24,7 +30,10 @@ class StringTypeTest extends TypeTest
         ];
     }
 
-    public function invalidValues(): array
+    /**
+     * {@inheritDoc}
+     */
+    public function invalidValuesProvider(): array
     {
         return [
             "Null"  => [null],
