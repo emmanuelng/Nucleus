@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Nucleus\Filter;
 
 /**
- * ### Type class
- *
  * Represents a type.
  */
 interface Type

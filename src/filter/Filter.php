@@ -12,8 +12,6 @@ use Nucleus\Filter\Types\ObjectType;
 use Nucleus\Filter\Types\StringType;
 
 /**
- * ### Filter class
- *
  * This class is used to filter values. Filtering is the process of validating
  * and casting a variable if needed.
  */
