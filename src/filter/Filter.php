@@ -12,15 +12,15 @@ use Nucleus\Filter\Types\ObjectType;
 use Nucleus\Filter\Types\StringType;
 
 /**
- * This class is used to filter values. Filtering is the process of validating
- * and casting a variable if needed.
+ * This class is used to filter values.
+ * Filtering is the process of validating and casting a variable if needed.
  */
-final class Filter
+class Filter
 {
     /**
      * Filters a value.
      *
-     * @param mixed $type The type name or schema.
+     * @param string|array $type The type name or schema.
      * @param mixed $value The value.
      * @return mixed The filtered value.
      */
@@ -33,7 +33,7 @@ final class Filter
     /**
      * Filters a list.
      *
-     * @param mixed $type The type name or schema.
+     * @param string|array $type The type name or schema.
      * @param mixed $value The value.
      * @return mixed The filtered value.
      */
@@ -55,7 +55,7 @@ final class Filter
      * Returns an instance a Type object that corresponds to a type name or
      * schema.
      *
-     * @param mixed $type The type name or a schema.
+     * @param string|array $type The type name or a schema.
      * @return Type The type object.
      */
     private static function getType($type): Type
@@ -77,7 +77,7 @@ final class Filter
     /**
      * Returns an instance a Type object that corresponds to a base type.
      *
-     * @param string $type The base type name.
+     * @param string $type The name of the base type.
      * @return Type The base type.
      */
     private static function getBaseType(string $type): Type
