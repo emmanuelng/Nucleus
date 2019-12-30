@@ -235,7 +235,7 @@ class ArrayLanguage implements Language
             }
 
             if ($item[0] === '/' && $item[-1] === '/') {
-                $items[] = trim($item, '/');
+                $items[] = $item;
                 continue;
             }
 

@@ -166,22 +166,30 @@ class Parser
     }
 
     /**
-     * Tries to match the current token with the given string. Consumes the
-     * current token if there is a match.
+     * Tries to match the current token with the given regular expression.
+     * Consumes the current token if there is a match.
      *
      * @param string $string The string.
      * @return boolean True if the token matched, false otherwise.
      */
-    private function matchCurrentToken(string $string): bool
+    private function matchCurrentToken(string $regex): bool
     {
-        $tokenValue = $this->tokens[$this->index]->value();
-        $regex      = '/^' . preg_quote($string) . '$/';
+        // Empty regex: always matches without consuming tokens.
+        if (empty($regex)) {
+            return true;
+        }
 
+        // Non-empty regex: try to match the current token.
+        $tokenValue = $this->tokens[$this->index]->value();
+        $regex      = '/^' . trim($regex, '/') . '$/';
+
+        // If there is a match, consume the token.
         if (preg_match($regex, $tokenValue)) {
             $this->index += 1;
             return true;
         }
 
+        // No match.
         return false;
     }
 
