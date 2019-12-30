@@ -145,6 +145,10 @@ class Parser
             return false;
         }
 
+        // Keep the previous idex. This wil be useful to 'restore' the consumed
+        // tokens in case the pattern didn't match.
+        $startIndex = $this->index;
+
         // Try to match the pattern's items.
         foreach ($pattern->items() as $item) {
             // Item is a string, try to match it with the current token.
@@ -159,6 +163,7 @@ class Parser
             }
 
             // Item didn't match.
+            $this->index = $startIndex;
             return false;
         }
 
