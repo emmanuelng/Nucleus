@@ -25,12 +25,29 @@ class Tokenizer
     private $specialTokensPattern;
 
     /**
+     * The input string.
+     *
+     * @var string
+     */
+    private $str;
+
+    /**
+     * The current index in the input string.
+     *
+     * @var int
+     */
+    private $index;
+
+    /**
      * Initializes the tokenizer.
      *
      * @param Language $language The language to use.
      */
     public function __construct(Language $language)
     {
+        $this->str   = '';
+        $this->index = 0;
+
         // String delimiters
         $this->stringDelimiters =
             $language->stringDelimiters();
@@ -48,28 +65,29 @@ class Tokenizer
      */
     public function tokenize(string $str): array
     {
-        $tokens = [];
-        $index  = 0;
+        $this->str   = $str;
+        $this->index = 0;
 
-        while ($index < strlen($str)) {
-            $token = new Token($index);
+        $tokens = [];
+        while ($this->index < strlen($str)) {
+            $token = new Token($this->index);
 
             // Try to tokenize a white space token
             $token->clear();
-            if ($this->tokenizeWhiteSpace($str, $index, $token)) {
+            if ($this->tokenizeWhiteSpace($token)) {
                 continue;
             }
 
             // Try to tokenize a string
             $token->clear();
-            if ($this->tokenizeString($str, $index, $token)) {
+            if ($this->tokenizeString($token)) {
                 $tokens[] = $token;
                 continue;
             }
 
             // Try to tokenize a word
             $token->clear();
-            if ($this->tokenizeWord($str, $index, $token)) {
+            if ($this->tokenizeWord($token)) {
                 $tokens[] = $token;
                 continue;
             }
@@ -84,130 +102,107 @@ class Tokenizer
     /**
      * Tokenizes white spaces.
      *
-     * @param string $str The input string.
-     * @param integer $index The current index.
      * @param Token $token The token.
      * @return boolean True if the tokenization was successful, false
      * otherwise.
      */
-    public function tokenizeWhiteSpace(
-        string $str,
-        int &$index,
-        Token $token
-    ): bool {
-        // End of string reached
-        if ($index >= strlen($str)) {
-            return true;
+    public function tokenizeWhiteSpace(Token $token): bool
+    {
+        while ($this->index < strlen($this->str)) {
+            // Non-space character: if the token is empty, the tokenization
+            // failed, otherwize it succeeded.
+            if (!preg_match('/\s/', $this->str[$this->index])) {
+                return !$token->isEmpty();
+            }
+
+            // Add space to token and go to the next character.
+            $token->append($this->str[$this->index]);
+            $this->index += 1;
         }
 
-        // Non-space character: if the token is empty, the tokenization failed,
-        // otherwize it succeeded.
-        if (!preg_match('/\s/', $str[$index])) {
-            return !$token->isEmpty();
-        }
-
-        // Add space to token and go to the next character.
-        $token->append($str[$index]);
-        $index += 1;
-
-        return $this->tokenizeWhiteSpace($str, $index, $token);
+        return true;
     }
 
     /**
      * Tokenizes white a string.
      *
-     * @param string $str The input string.
-     * @param integer $index The current index.
      * @param Token $token The token.
-     * @param bool $escape True if the current character must be escaped.
      * @return boolean True if the tokenization was successful, false
      * otherwise.
      */
-    public function tokenizeString(
-        string $str,
-        int &$index,
-        Token $token,
-        bool $escape = false
-    ): bool {
-        // End of string reached
-        if ($index >= strlen($str)) {
-            return false;
+    public function tokenizeString(Token $token): bool
+    {
+        $escape = false;
+        while ($this->index < strlen($this->str)) {
+            // Get the current character.
+            $currentChar = $this->str[$this->index];
+
+            // Check if the token is a string
+            if (
+                $token->isEmpty() &&
+                !in_array($currentChar, $this->stringDelimiters)
+            ) {
+                return false;
+            }
+
+            // Add the current character to the token.
+            $token->append($currentChar);
+            $this->index += 1;
+
+            // Determine if the end of string is reached
+            if (
+                strlen($token->value()) > 1 &&
+                !$escape && $token->value()[-1] === $token->value()[0]
+            ) {
+                return true;
+            }
+
+            $escape = !$escape && $currentChar === '\\';
         }
 
-        // Check if the token is a string
-        if (
-            $token->isEmpty() &&
-            !in_array($str[$index], $this->stringDelimiters)
-        ) {
-            return false;
-        }
-
-        // Add the next character to the token.
-        $token->append($str[$index]);
-        $index += 1;
-
-        // Determine if the end of string is reached
-        if (
-            strlen($token->value()) > 1 &&
-            !$escape && $token->value()[-1] === $token->value()[0]
-        ) {
-            return true;
-        }
-
-        // Go to the next character
-        return $this->tokenizeString(
-            $str,
-            $index,
-            $token,
-            !$escape && $token->value()[-1] === '\\'
-        );
+        return false;
     }
 
     /**
      * Tokenizes white a word (i.e. a sequence of character ended by a white
      * space).
      *
-     * @param string $str The input string.
-     * @param integer $index The current index.
      * @param Token $token The token.
      * @return boolean True if the tokenization was successful, false
      * otherwise.
      */
-    public function tokenizeWord(
-        string $str,
-        int &$index,
-        Token $token
-    ): bool {
-        // End of string reached
-        if ($index >= strlen($str)) {
-            return true;
-        }
-
-        // Space character reached
-        if (preg_match('/\s/', $str[$index])) {
-            return true;
-        }
-
-        // Add character to token
-        $token->append($str[$index]);
-        $index += 1;
-
-        // Check if the token ends with a special token
-        $matches = [];
-        if (preg_match($this->specialTokensPattern, $token->value(), $matches)) {
-            $matchLength = strlen($matches[0]);
-            $isFullMatch = $matchLength == $token->length();
-
-            if (!$isFullMatch) {
-                $index -= $matchLength;
-                $token = $token->rtrim($matchLength);
+    public function tokenizeWord(Token $token): bool
+    {
+        while ($this->index < strlen($this->str)) {
+            // Space character reached
+            if (preg_match('/\s/', $this->str[$this->index])) {
+                return true;
             }
 
-            return true;
+            // Add character to token
+            $token->append($this->str[$this->index]);
+            $this->index += 1;
+
+            // Check if the token ends with a special token
+            $matches = [];
+            if (preg_match(
+                $this->specialTokensPattern,
+                $token->value(),
+                $matches
+            )) {
+                $matchLength = strlen($matches[0]);
+                $isFullMatch = $matchLength == $token->length();
+
+                if (!$isFullMatch) {
+                    $index -= $matchLength;
+                    $token = $token->rtrim($matchLength);
+                }
+
+                return true;
+            }
         }
 
-        // Go to the next character
-        return $this->tokenizeWord($str, $index, $token);
+        return true;
     }
 
     /**
