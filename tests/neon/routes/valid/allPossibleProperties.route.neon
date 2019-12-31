@@ -1,0 +1,103 @@
+route AllPossibleProperties
+{
+    method 'GET'
+    url    '/test/1'
+
+    parameters {
+        int    integerField
+        bool   boolField
+        string stringField
+        float  floatField
+
+        int    optIntegerField = 1
+        bool   optBoolField    = true
+        string optStringField  = ''
+        float  optFloatField   = 0.1
+
+        int    docIntegerField : "This is an integer field."
+        bool   docBoolField    : "This is an boolean field."
+        string docStringField  : "This is an string field."
+        float  docFloatField   : "This is an float field."
+
+        int    docOptIntegerField = 1    : "This is an integer field."
+        bool   docOptBoolField    = true : "This is an boolean field."
+        string docOptStringField  = ''   : "This is an string field."
+        float  docOptFloatField   = 0.1  : "This is an float field."
+
+        int multilineDoc : "Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Ut enim ad minim veniam, quis
+                            nostrud exercitation ullamco laboris nisi ut aliquip
+                            ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore
+                            eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum."
+    }
+
+    request {
+        int    integerField
+        bool   boolField
+        string stringField
+        float  floatField
+
+        int    optIntegerField = 1
+        bool   optBoolField    = true
+        string optStringField  = ''
+        float  optFloatField   = 0.1
+
+        int    docIntegerField : "This is an integer field."
+        bool   docBoolField    : "This is an boolean field."
+        string docStringField  : "This is an string field."
+        float  docFloatField   : "This is an float field."
+
+        int    docOptIntegerField = 1    : "This is an integer field."
+        bool   docOptBoolField    = true : "This is an boolean field."
+        string docOptStringField  = ''   : "This is an string field."
+        float  docOptFloatField   = 0.1  : "This is an float field."
+
+        int multilineDoc : "Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Ut enim ad minim veniam, quis
+                            nostrud exercitation ullamco laboris nisi ut aliquip
+                            ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore
+                            eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum."
+    }
+
+    response {
+        int    integerField
+        bool   boolField
+        string stringField
+        float  floatField
+
+        int    optIntegerField = 1
+        bool   optBoolField    = true
+        string optStringField  = ''
+        float  optFloatField   = 0.1
+
+        int    docIntegerField : "This is an integer field."
+        bool   docBoolField    : "This is an boolean field."
+        string docStringField  : "This is an string field."
+        float  docFloatField   : "This is an float field."
+
+        int    docOptIntegerField = 1    : "This is an integer field."
+        bool   docOptBoolField    = true : "This is an boolean field."
+        string docOptStringField  = ''   : "This is an string field."
+        float  docOptFloatField   = 0.1  : "This is an float field."
+
+        int multilineDoc : "Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Ut enim ad minim veniam, quis
+                            nostrud exercitation ullamco laboris nisi ut aliquip
+                            ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore
+                            eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum."
+    }
+
+    callback functionCallback
+}
