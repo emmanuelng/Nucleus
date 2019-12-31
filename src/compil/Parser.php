@@ -107,21 +107,26 @@ class Parser
             $child = new SyntaxNode();
 
             if ($this->matchPattern($pattern, $child)) {
-                // If a full match is requested, check that all
-                // tokens were consumed.
+                // If a full match is requested, check that all tokens were
+                // consumed.
                 if ($fullMatch && $this->index < $nbTokens) {
                     $parent->clear();
                     $this->index = $startIndex;
                     continue;
                 }
 
-                // Add the child syntax node.
-                $endToken = $this->tokens[$this->index - 1];
-                $value    = $this->getValue($startToken, $endToken);
+                // Get the token's value.
+                $value = '';
+                if ($this->index > $startIndex) {
+                    $endToken = $this->tokens[$this->index - 1];
+                    $value    = $this->getValue($startToken, $endToken);
+                }
 
+                // Set the child syntax node.
                 $child->setValue($value);
                 $child->setPattern($pattern->name());
 
+                // Add the child syntax node.
                 $parent->setChild($node->name(), $child);
                 return true;
             }
