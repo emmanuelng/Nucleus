@@ -34,45 +34,37 @@ class NeonCompiler
         $schemas = [];
 
         // Compile all neon files in the path.
-        foreach (explode(',', $path) as $dir) {
+        foreach (self::getFiles($path) as $file) {
+            // Try to get a route
+            $name  = '';
+            $route = self::compileRoute($file, $name);
 
-            // Remove trailing slashes
-            $dir = trim($dir, '/\\');
-
-            // Find all files with the .neon extension
-            foreach (glob("$dir\*.neon") as $file) {
-
-                // Try to get a route
-                $name  = '';
-                $route = self::compileRoute($file, $name);
-
-                if ($route != null) {
-                    // Check that the route isn't already defined.
-                    if (isset($routes[$name])) {
-                        $msg = "Duplicate route name $name";
-                        throw new CompilationErrorException($msg);
-                    }
-
-                    // Add the route.
-                    $routes[$name] = $route;
-                    continue;
+            if ($route != null) {
+                // Check that the route isn't already defined.
+                if (isset($routes[$name])) {
+                    $msg = "Duplicate route name $name";
+                    throw new CompilationErrorException($msg);
                 }
 
-                // Try to get a schema
-                $name   = '';
-                $schema = self::compileSchema($file, $name);
+                // Add the route.
+                $routes[$name] = $route;
+                continue;
+            }
 
-                if ($schema != null) {
-                    // Check that the schema isn't already defined.
-                    if (isset($schemas[$name])) {
-                        $msg = "Duplicate schema name $name";
-                        throw new CompilationErrorException($msg);
-                    }
+            // Try to get a schema
+            $name   = '';
+            $schema = self::compileSchema($file, $name);
 
-                    // Add the schema.
-                    $schemas[$name] = $schema;
-                    continue;
+            if ($schema != null) {
+                // Check that the schema isn't already defined.
+                if (isset($schemas[$name])) {
+                    $msg = "Duplicate schema name $name";
+                    throw new CompilationErrorException($msg);
                 }
+
+                // Add the schema.
+                $schemas[$name] = $schema;
+                continue;
             }
         }
 
@@ -84,6 +76,32 @@ class NeonCompiler
 
         // Return the list of routes.
         return $routeObjs;
+    }
+
+    /**
+     * Returns the list of all .neon files in the given path and their
+     * sub-directories.
+     *
+     * @param string $path A comma-separated list of directories.
+     * @return array The list of files.
+     */
+    private static function getFiles(string $path): array
+    {
+        if (empty($path)) {
+            return [];
+        }
+
+        $files = [];
+        foreach (explode(',', $path) as $directory) {
+            $directory = trim($directory, '\\/');
+            $subDirLst = glob("$directory\*", GLOB_ONLYDIR);
+            $subPath   = implode(',', $subDirLst);
+
+            $files = array_merge($files, glob("$directory\*.neon"));
+            $files = array_merge($files, self::getFiles($subPath));
+        }
+
+        return $files;
     }
 
     /**
