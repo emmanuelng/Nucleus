@@ -65,7 +65,7 @@ class User
 ```
 The `Request` and `Response` classes provide methods for obtaining the input data and outputting the result. The Nucleus framework guarantees that all input data corresponds to the definition of the NEON file.
 
-### Schemas
+#### Schemas
 
 Nucleus has four base types: `int`, `bool`, `float` and `string`. The NEON notation allows to define composite types called schemas.
 ```
