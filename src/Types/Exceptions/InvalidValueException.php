@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Nucleus\Neon\Exceptions;
+namespace Nucleus\Types\Exceptions;
 
 use Exception;
 
-class LinkErrorException extends Exception
+class InvalidValueException extends Exception
 {
     public function __construct(string $message)
     {

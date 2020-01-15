@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Requests;
 
-use Nucleus\Filter\Exceptions\InvalidValueException;
-use Nucleus\Filter\Exceptions\MissingPropertyException;
-use Nucleus\Filter\Filter;
 use Nucleus\Router\Exceptions\BadRequestException;
 use Nucleus\Router\Request;
 use Nucleus\Router\Route;
+use Nucleus\Types\Exceptions\InvalidValueException;
 
 /**
  * Represents a filtered request, i.e. a safe request for a route. This class
@@ -124,14 +122,9 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->parameters();
-            $params = $req->parameters();
-            $this->parameters = Filter::filterValue($schema, $params);
-        } catch (MissingPropertyException $e) {
-            $msg = 'Missing parameter ' . $e->property();
-            throw new BadRequestException($msg);
+            $this->parameters = $schema->filter($req->parameters());
         } catch (InvalidValueException $e) {
-            $msg = 'Invalid parameters';
-            throw new BadRequestException($msg);
+            throw new BadRequestException($e->getMessage());
         }
     }
 
@@ -146,14 +139,9 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->requestBody();
-            $body   = $req->body();
-            $this->body = Filter::filterValue($schema, $body);
-        } catch (MissingPropertyException $e) {
-            $msg = 'Missing value ' . $e->property();
-            throw new BadRequestException($msg);
+            $this->body = $schema->filter($req->body());
         } catch (InvalidValueException $e) {
-            $msg = 'Invalid request body';
-            throw new BadRequestException($msg);
+            throw new BadRequestException($e->getMessage());
         }
     }
 }

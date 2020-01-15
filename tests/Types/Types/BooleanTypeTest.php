@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Filter\Types;
+namespace Tests\Types\Types;
 
-use Tests\Filter\TypeTest;
+use Nucleus\Types\Type;
+use Nucleus\Types\Types\BooleanType;
+use Tests\Types\TypeTest as TypesTypeTest;
 
-class BooleanTypeTest extends TypeTest
+class BooleanTypeTest extends TypesTypeTest
 {
     /**
      * {@inheritDoc}
      */
-    protected function type()
+    protected function type(): Type
     {
-        return 'bool';
+        return BooleanType::get();
     }
 
     /**
@@ -32,6 +34,7 @@ class BooleanTypeTest extends TypeTest
             "Strings ('FALSE')"  => ['FALSE', false],
             "Strings ('False')"  => ['False', false],
             "Strings ('FaLse')"  => ['FaLse', false],
+            "Null"               => [null, null]
         ];
     }
 
@@ -48,8 +51,7 @@ class BooleanTypeTest extends TypeTest
             "Integers (1)"            => [1],
             "Integers (0)"            => [0],
             "Floats"                  => [1.5],
-            "Arrays"                  => [['true']],
-            "Null"                    => [null]
+            "Arrays"                  => [['true']]
         ];
     }
 }

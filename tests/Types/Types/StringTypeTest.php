@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Filter\Types;
 
-use Tests\Filter\TypeTest;
+use Nucleus\Types\Type;
+use Nucleus\Types\Types\StringType;
+use Tests\Types\TypeTest as TypesTypeTest;
 
-class StringTypeTest extends TypeTest
+class StringTypeTest extends TypesTypeTest
 {
     /**
      * {@inheritDoc}
      */
-    protected function type()
+    protected function type(): Type
     {
-        return 'string';
+        return StringType::get();
     }
 
     /**
@@ -26,7 +28,8 @@ class StringTypeTest extends TypeTest
             "Empty strings" => ['', ''],
             "Integers"      => [1, '1'],
             "Booleans"      => [true, 'true'],
-            "Floats"        => [1.5, '1.5']
+            "Floats"        => [1.5, '1.5'],
+            "Null"          => [null, null]
         ];
     }
 
@@ -36,8 +39,8 @@ class StringTypeTest extends TypeTest
     public function invalidValuesProvider(): array
     {
         return [
-            "Null"  => [null],
-            "Lists" => [['a', 'b', 'c']]
+            "Lists"   => [['a', 'b', 'c']],
+            "Objects" => [new class(){}]
         ];
     }
 }

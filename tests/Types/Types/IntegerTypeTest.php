@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Filter\Types;
 
-use Tests\Filter\TypeTest;
+use Nucleus\Types\Type;
+use Nucleus\Types\Types\IntegerType;
+use Tests\Types\TypeTest as TypesTypeTest;
 
-class FloatTypeTest extends TypeTest
+class IntegerTypeTest extends TypesTypeTest
 {
     /**
      * {@inheritDoc}
      */
-    protected function type()
+    protected function type(): Type
     {
-        return 'float';
+        return IntegerType::get();
     }
 
     /**
@@ -22,10 +24,9 @@ class FloatTypeTest extends TypeTest
     public function validValuesProvider(): array
     {
         return [
-            "Floats"          => [1.5, 1.5],
-            "Float strings"   => ['12.678', 12.678],
-            "Integers"        => [1, 1.0],
-            "Integer strings" => ['123', 123.0]
+            "Integers"        => [1, 1],
+            "Integer strings" => ['123', 123],
+            "Null"            => [null, null]
         ];
     }
 
@@ -37,8 +38,8 @@ class FloatTypeTest extends TypeTest
         return [
             "Booleans"             => [true],
             "Strings with letters" => ['1a'],
-            "Arrays"               => [[1.5]],
-            "Null"                 => [null]
+            "Floats"               => [1.0],
+            "Arrays"               => [['1']]
         ];
     }
 }

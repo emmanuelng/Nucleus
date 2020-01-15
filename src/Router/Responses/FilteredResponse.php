@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Responses;
 
-use Nucleus\Filter\Filter;
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
 
@@ -61,8 +60,7 @@ class FilteredResponse implements Response
      */
     public function setBody(array $data): void
     {
-        $schema   = $this->route->responseBody();
-        $filtered = Filter::filterValue($schema, $data);
-        $this->res->setBody($filtered);
+        $schema = $this->route->responseBody();
+        $this->res->setBody($schema->filter($data));
     }
 }

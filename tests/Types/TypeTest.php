@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Filter;
+namespace Tests\Types;
 
-use Nucleus\Filter\Exceptions\InvalidValueException;
-use Nucleus\Filter\Filter;
+use Nucleus\Types\Exceptions\InvalidValueException;
+use Nucleus\Types\Type;
 use PHPUnit\Framework\TestCase;
 
 abstract class TypeTest extends TestCase
@@ -13,9 +13,9 @@ abstract class TypeTest extends TestCase
     /**
      * Returns the tested type.
      *
-     * @return string|array
+     * @return Type
      */
-    abstract protected function type();
+    abstract protected function type() : Type;
 
     /**
      * Valid values data provider.
@@ -39,11 +39,10 @@ abstract class TypeTest extends TestCase
     public function testAcceptsValidValues($value, $result): void
     {
         try {
-            $filtered = Filter::filterValue($this->type(), $value);
+            $filtered = $this->type()->filter($value);
             $this->assertSame($result, $filtered);
         } catch (InvalidValueException $e) {
-            $value = $e->value();
-            $this->fail("Could not filter value $value.");
+            $this->fail($e->getMessage());
         }
     }
 
@@ -55,6 +54,6 @@ abstract class TypeTest extends TestCase
     public function testRejectsInvalidValues($value): void
     {
         $this->expectException(InvalidValueException::class);
-        Filter::filterValue($this->type(), $value);
+        $this->type()->filter($value);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nucleus\Filter;
+namespace Nucleus\Types;
 
 /**
  * Represents a type.
@@ -10,9 +10,10 @@ namespace Nucleus\Filter;
 interface Type
 {
     /**
-     * Filters a value.
+     * Validates and casts a value. This method must throw an exception if the
+     * input value isn't valid.
      *
-     * @param mixed $value The value.
+     * @param mixed $value
      * @return mixed The filtered value.
      */
     public function filter($value);

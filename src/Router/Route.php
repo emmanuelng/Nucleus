@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nucleus\Router;
 
+use Nucleus\Types\Schema;
+
 /**
  * Represents a route.
  */
@@ -26,23 +28,23 @@ interface Route
     /**
      * Returns the schema of the route's parameters.
      *
-     * @return array The parameter's schema.
+     * @return Schema The parameter's schema.
      */
-    public function parameters(): array;
+    public function parameters(): Schema;
 
     /**
      * Returns the schema of the request body.
      *
-     * @return array The request body schema.
+     * @return Schema The request body schema.
      */
-    public function requestBody(): array;
+    public function requestBody(): Schema;
 
     /**
      * Returns the schema of the response body.
      *
-     * @return array The response body schema.
+     * @return Schema The response body schema.
      */
-    public function responseBody(): array;
+    public function responseBody(): Schema;
 
     /**
      * Executes the route.
