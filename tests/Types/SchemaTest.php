@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Filter\Types;
 
-use Nucleus\Filter\Exceptions\MissingPropertyException;
-use Nucleus\Filter\Exceptions\MissingTypeException;
-use Nucleus\Filter\Filter;
 use Nucleus\Types\Exceptions\InvalidValueException;
 use Nucleus\Types\Field;
 use Nucleus\Types\Schema;
