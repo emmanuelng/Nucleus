@@ -122,7 +122,11 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->parameters();
-            $this->parameters = $schema->filter($req->parameters());
+            if ($schema === null) {
+                $this->parameters = [];
+            } else {
+                $this->parameters = $schema->filter($req->parameters());
+            }
         } catch (InvalidValueException $e) {
             throw new BadRequestException($e->getMessage());
         }
@@ -139,7 +143,11 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->requestBody();
-            $this->body = $schema->filter($req->body());
+            if ($schema === null) {
+                $this->body = [];
+            } else {
+                $this->body = $schema->filter($req->body());
+            }
         } catch (InvalidValueException $e) {
             throw new BadRequestException($e->getMessage());
         }

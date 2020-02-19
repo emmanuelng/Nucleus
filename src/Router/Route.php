@@ -28,23 +28,23 @@ interface Route
     /**
      * Returns the schema of the route's parameters.
      *
-     * @return Schema The parameter's schema.
+     * @return Schema|null The parameter's schema.
      */
-    public function parameters(): Schema;
+    public function parameters(): ?Schema;
 
     /**
      * Returns the schema of the request body.
      *
-     * @return Schema The request body schema.
+     * @return Schema|null The request body schema.
      */
-    public function requestBody(): Schema;
+    public function requestBody(): ?Schema;
 
     /**
      * Returns the schema of the response body.
      *
-     * @return Schema The response body schema.
+     * @return Schema|null The response body schema.
      */
-    public function responseBody(): Schema;
+    public function responseBody(): ?Schema;
 
     /**
      * Executes the route.
