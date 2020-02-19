@@ -5,14 +5,8 @@ declare(strict_types=1);
 namespace Tests\Filter\Types;
 
 use Nucleus\Types\Exceptions\InvalidValueException;
-use Nucleus\Types\Field;
-use Nucleus\Types\Schema;
-use Nucleus\Types\Type;
-use Nucleus\Types\Types\BooleanType;
-use Nucleus\Types\Types\FloatType;
-use Nucleus\Types\Types\IntegerType;
-use Nucleus\Types\Types\StringType;
 use PHPUnit\Framework\TestCase;
+use Tests\Types\Classes\TestSchema;
 
 /**
  * Tests the schema object.
@@ -26,7 +20,7 @@ class SchemaTest extends TestCase
      */
     public function testFiltersObjectValues()
     {
-        $schema = self::buildSchema([
+        $schema = new TestSchema([
             'integer'      => ['type' => 'int'],
             'boolean'      => ['type' => 'bool'],
             'float'        => ['type' => 'float'],
@@ -65,7 +59,7 @@ class SchemaTest extends TestCase
      */
     public function testAcceptsObjectsWithMissingOptionalValues()
     {
-        $schema   = self::buildSchema(['a' => ['type' => 'int', 'default' => 1]]);
+        $schema   = new TestSchema(['a' => ['type' => 'int', 'default' => 1]]);
         $filtered = $schema->filter([]);
         $this->assertSame($filtered, ['a' => 1]);
     }
@@ -77,67 +71,8 @@ class SchemaTest extends TestCase
      */
     public function testRejectsObjectsWithMissingMandatoryValues()
     {
-        $schema = self::buildSchema(['a' => ['type' => 'int']]);
+        $schema = new TestSchema(['a' => ['type' => 'int']]);
         $this->expectException(InvalidValueException::class);
         $schema->filter([]);
-    }
-
-    /**
-     * Builds a schema object from an array.
-     *
-     * @param array $schemaArr The array.
-     * @return Schema The schema object.
-     */
-    private static function buildSchema(array $schemaArr): Schema
-    {
-        $schema = new Schema();
-
-        foreach ($schemaArr as $name => $fieldArr) {
-            $type   = self::buildType($fieldArr['type']);
-            $isList = $fieldArr['isList'] ?? false;
-            $field  = new Field($name, $type, $isList);
-
-            if (isset($fieldArr['default'])) {
-                $default = $fieldArr['default'];
-                $field->setDefaultValue($default);
-            }
-
-            $schema->addField($field);
-        }
-
-        return $schema;
-    }
-
-    /**
-     * Builds a type object based on an input. If the input is an array,
-     * returns a schema, else returns a base type, if it exists.
-     *
-     * @param string|array $type The input.
-     * @return Type|null The type object or nullif it is impossible to build
-     * it.
-     */
-    private static function buildType($type): ?Type
-    {
-        // Array. Return a schema.
-        if (is_array($type)) {
-            return self::buildSchema($type);
-        }
-
-        // Other. Try to return a built-in type.
-        switch ($type) {
-            case 'int':
-                return IntegerType::get();
-            case 'bool':
-                return BooleanType::get();
-            case 'float':
-                return FloatType::get();
-            case 'string':
-                return StringType::get();
-            default:
-                break;
-        }
-
-        // Invalid type.
-        return null;
     }
 }

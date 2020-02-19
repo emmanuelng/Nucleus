@@ -7,7 +7,7 @@ namespace Nucleus\Types;
 /**
  * Represents a schema.
  */
-class Schema implements Type
+abstract class Schema implements Type
 {
     /**
      * The fields of the schema.
@@ -22,7 +22,7 @@ class Schema implements Type
      * @param Field $field The field to add.
      * @return void
      */
-    public function addField(Field $field): void
+    protected function addField(Field $field): void
     {
         $this->fields[$field->name()] = $field;
     }

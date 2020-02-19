@@ -7,13 +7,8 @@ namespace Tests\Router\Classes;
 use Nucleus\Router\Request;
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
-use Nucleus\Types\Field;
 use Nucleus\Types\Schema;
-use Nucleus\Types\Type;
-use Nucleus\Types\Types\BooleanType;
-use Nucleus\Types\Types\FloatType;
-use Nucleus\Types\Types\IntegerType;
-use Nucleus\Types\Types\StringType;
+use Tests\Types\Classes\TestSchema;
 
 /**
  * This class is used to test the route class.
@@ -92,9 +87,9 @@ class TestRoute implements Route
         $this->method           = $method;
         $this->url              = $url;
         $this->onExecute        = $onExecute;
-        $this->parameters       = new Schema();
-        $this->request          = new Schema();
-        $this->response         = new Schema();
+        $this->parameters       = null;
+        $this->request          = null;
+        $this->response         = null;
         $this->wasExecuted      = false;
         $this->receivedRequest  = null;
     }
@@ -107,7 +102,7 @@ class TestRoute implements Route
      */
     public function setParameterSchema(array $schema): void
     {
-        $this->parameters = self::buildSchema($schema);
+        $this->parameters = new TestSchema($schema);
     }
 
     /**
@@ -118,7 +113,7 @@ class TestRoute implements Route
      */
     public function setRequestSchema(array $schema): void
     {
-        $this->request = self::buildSchema($schema);
+        $this->request = new TestSchema($schema);
     }
 
     /**
@@ -129,7 +124,7 @@ class TestRoute implements Route
      */
     public function setResponseSchema(array $schema): void
     {
-        $this->response = self::buildSchema($schema);
+        $this->response = new TestSchema($schema);
     }
 
     /**
@@ -151,7 +146,7 @@ class TestRoute implements Route
     /**
      * {@inheritDoc}
      */
-    public function parameters(): Schema
+    public function parameters(): ?Schema
     {
         return $this->parameters;
     }
@@ -159,7 +154,7 @@ class TestRoute implements Route
     /**
      * {@inheritDoc}
      */
-    public function requestBody(): Schema
+    public function requestBody(): ?Schema
     {
         return $this->request;
     }
@@ -167,7 +162,7 @@ class TestRoute implements Route
     /**
      * {@inheritDoc}
      */
-    public function responseBody(): Schema
+    public function responseBody(): ?Schema
     {
         return $this->response;
     }
@@ -205,64 +200,5 @@ class TestRoute implements Route
     public function receivedRequest(): ?Request
     {
         return $this->receivedRequest;
-    }
-
-    /**
-     * Builds a schema object from an array.
-     *
-     * @param array $schemaArr The array.
-     * @return Schema The schema object.
-     */
-    private static function buildSchema(array $schemaArr): Schema
-    {
-        $schema = new Schema();
-
-        foreach ($schemaArr as $name => $fieldArr) {
-            $type   = self::buildType($fieldArr['type']);
-            $isList = $fieldArr['isList'] ?? false;
-            $field  = new Field($name, $type, $isList);
-
-            if (isset($fieldArr['default'])) {
-                $default = $fieldArr['default'];
-                $field->setDefaultValue($default);
-            }
-
-            $schema->addField($field);
-        }
-
-        return $schema;
-    }
-
-    /**
-     * Builds a type object based on an input. If the input is an array,
-     * returns a schema, else returns a base type, if it exists.
-     *
-     * @param string|array $type The input.
-     * @return Type|null The type object or nullif it is impossible to build
-     * it.
-     */
-    private static function buildType($type): ?Type
-    {
-        // Array. Return a schema.
-        if (is_array($type)) {
-            return self::buildSchema($type);
-        }
-
-        // Other. Try to return a built-in type.
-        switch ($type) {
-            case 'int':
-                return IntegerType::get();
-            case 'bool':
-                return BooleanType::get();
-            case 'float':
-                return FloatType::get();
-            case 'string':
-                return StringType::get();
-            default:
-                break;
-        }
-
-        // Invalid type.
-        return null;
     }
 }
