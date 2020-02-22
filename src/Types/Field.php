@@ -33,6 +33,13 @@ class Field
     private $isList;
 
     /**
+     * Indicates whether the field is optional.
+     *
+     * @var bool
+     */
+    private $optional;
+
+    /**
      * The default value of the field.
      *
      * @var mixed
@@ -45,36 +52,20 @@ class Field
      * @param string $name The name of the field.
      * @param Type $type The type of the field.
      * @param bool $isList Indicated whether the field is a list.
+     * @param mixed $default The default value.
      */
     public function __construct(
         string $name,
         Type $type,
-        bool $isList
+        bool $isList,
+        $default = null
     ) {
-        $this->name   = $name;
-        $this->type   = $type;
-        $this->isList = $isList;
-    }
+        $this->name     = $name;
+        $this->type     = $type;
+        $this->isList   = $isList;
+        $this->optional = func_num_args() > 3;
 
-    /**
-     * Sets the default value of the field.
-     *
-     * @param mixed $defaultValue
-     * @return void
-     */
-    public function setDefaultValue($defaultValue): void
-    {
-        // Null is always a valid default value.
-        if ($defaultValue === null) {
-            $this->defaultValue = null;
-            return;
-        }
-
-        // Filter the default value to make sure it is compatible with the type
-        // of the field.
-        $this->defaultValue = $this->isList
-            ? $this->filterList($defaultValue)
-            : $this->filterValue($defaultValue);
+        $this->setDefault($default);
     }
 
     /**
@@ -85,6 +76,16 @@ class Field
     public function name(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Returns whether this field is optional.
+     *
+     * @return boolean True if optional, false otherwise.
+     */
+    public function isOptional(): bool
+    {
+        return $this->optional;
     }
 
     /**
@@ -102,8 +103,8 @@ class Field
         }
 
         // Empty value. Check if the field has a default value.
-        if (!isset($this->defaultValue)) {
-            $msg = "Missing value.";
+        if (!$this->isOptional()) {
+            $msg = "Missing value for field $this->name.";
             throw new InvalidValueException($msg);
         }
 
@@ -141,5 +142,26 @@ class Field
     private function filterValue($value)
     {
         return $this->type->filter($value);
+    }
+
+    /**
+     * Sets the default value of the field.
+     *
+     * @param mixed $value The default value.
+     * @return void
+     */
+    private function setDefault($value): void
+    {
+        // Null is always a valid default value.
+        if ($value === null) {
+            $this->defaultValue = null;
+            return;
+        }
+
+        // Filter the default value to make sure it is compatible with the type
+        // of the field.
+        $this->defaultValue = $this->isList
+            ? $this->filterList($value)
+            : $this->filterValue($value);
     }
 }

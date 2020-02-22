@@ -27,11 +27,12 @@ class TestSchema extends Schema
         foreach ($schemaArr as $name => $fieldArr) {
             $type   = self::getType($fieldArr['type']);
             $isList = $fieldArr['isList'] ?? false;
-            $field  = new Field($name, $type, $isList);
 
             if (isset($fieldArr['default'])) {
                 $default = $fieldArr['default'];
-                $field->setDefaultValue($default);
+                $field   = new Field($name, $type, $isList, $default);
+            } else {
+                $field = new Field($name, $type, $isList);
             }
 
             $this->addField($field);

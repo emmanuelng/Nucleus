@@ -7,11 +7,10 @@ namespace Nucleus\Router;
 use Exception;
 use Nucleus\Router\Exceptions\HttpException;
 use Nucleus\Router\Exceptions\InvalidRouteException;
-use Nucleus\Router\Exceptions\MethodNotAllowedException;
-use Nucleus\Router\Exceptions\NotFoundException;
 use Nucleus\Router\Policies\DefaultPolicy;
 use Nucleus\Router\Requests\FilteredRequest;
 use Nucleus\Router\Requests\ServerRequest;
+use Nucleus\Router\Resolvers\RegexResolver;
 use Nucleus\Router\Responses\FilteredResponse;
 use Nucleus\Router\Responses\ServerResponse;
 
@@ -37,25 +36,35 @@ class Router
     private $policy;
 
     /**
-     * The router's routes.
+     * The URL resolver.
      *
-     * @var array
+     * @var Resolver
      */
-    private $routes;
+    private $resolver;
 
     /**
      * Initializes the router.
      *
      * @param string $baseUrl The base URL. In most cases corresponds to the
      * host's URL.
+     * @param Resolver|null $resolver The URL resolver to use. If null,
+     * initializes the router with the default resolver.
      * @param Policy|null $policy The router's policy. If null, initializes
      * the router with the default policy.
      */
-    public function __construct(string $baseUrl = '', ?Policy $policy = null)
-    {
-        $this->baseUrl = $baseUrl;
-        $this->policy  = $policy;
-        $this->routes  = [];
+    public function __construct(
+        string $baseUrl = '',
+        ?Resolver $resolver = null,
+        ?Policy $policy = null
+    ) {
+        $this->baseUrl  = $baseUrl;
+        $this->resolver = $resolver;
+        $this->policy   = $policy;
+
+        // If no resolver was specified, use the default one.
+        if ($resolver === null) {
+            $this->resolver = new RegexResolver();
+        }
 
         // If no policy was specified, use the default one.
         if ($policy === null) {
@@ -82,16 +91,8 @@ class Router
             throw new InvalidRouteException('Method not allowed');
         }
 
-        // Get the route's url
-        $url = trim($route->url(), '/');
-
-        // Check if the route already exists
-        if (isset($this->routes[$url][$method])) {
-            throw new InvalidRouteException('Duplicate URL');
-        }
-
-        // Bind the route
-        $this->routes[$url][$method] = $route;
+        // Register the route
+        $this->resolver->register($route);
     }
 
     /**
@@ -104,39 +105,25 @@ class Router
     public function handle(Request $req, Response $res): void
     {
         try {
-            // Get the request method
+            // Get the request method.
             $method = strtoupper($req->method());
-
-            // If it's a preflighted request, handle it
             if ($method === 'OPTIONS') {
                 $this->handlePreflightedRequests($res);
                 return;
             }
 
-            // Get the request URL
+            // Get the request URL.
             $url = $req->url();
-
-            // Remove the base URL
             $baseUrlLen = strlen($this->baseUrl);
+
             if (substr($url, 0, $baseUrlLen) == $this->baseUrl) {
                 $url = substr($url, $baseUrlLen);
             }
 
-            // Remove all slashes at the beginning or the end of the URL
-            $url = trim($url, '/');
+            // Resolve the URL.
+            $route = $this->resolver->resolve($method, $url);
 
-            // Check if URL exists
-            if (!isset($this->routes[$url])) {
-                throw new NotFoundException($method, $url);
-            }
-
-            // Check if method is allowed
-            if (!isset($this->routes[$url][$method])) {
-                throw new MethodNotAllowedException($method, $url);
-            }
-
-            // Execute the route and send the response
-            $route       = $this->routes[$url][$method];
+            // Execute the route.
             $filteredReq = new FilteredRequest($req, $route);
             $filteredRes = new FilteredResponse($res, $route);
 

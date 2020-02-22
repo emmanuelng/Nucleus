@@ -6,8 +6,24 @@ namespace Nucleus\Router\Exceptions;
 
 class MethodNotAllowedException extends HttpException
 {
-    public function __construct(string $message)
+    private $method;
+    private $url;
+
+    public function __construct(string $method, string $url)
     {
-        parent::__construct($message, 405);
+        parent::__construct("Method not allowed.", 405);
+
+        $this->method = $method;
+        $this->url    = $url;
+    }
+
+    public function method(): string
+    {
+        return $this->method;
+    }
+
+    public function url(): string
+    {
+        return $this->url;
     }
 }

@@ -6,6 +6,7 @@ namespace Nucleus\Router\Responses;
 
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
+use Nucleus\Router\Routes\ResolvedRoute;
 
 /**
  * Represents a filtered response. Wraps a response and makes sure that it is
@@ -23,7 +24,7 @@ class FilteredResponse implements Response
     /**
      * The route associated to the response.
      *
-     * @var Route
+     * @var ResolvedRoute
      */
     private $route;
 
@@ -31,11 +32,11 @@ class FilteredResponse implements Response
      * Initializes the response.
      *
      * @param Response $res The original response
-     * @param Route $route The route associated to the response
+     * @param ResolvedRoute $route The route
      */
-    public function __construct(Response $res, Route $route)
+    public function __construct(Response $res, ResolvedRoute $route)
     {
-        $this->res = $res;
+        $this->res   = $res;
         $this->route = $route;
     }
 

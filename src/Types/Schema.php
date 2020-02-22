@@ -17,6 +17,17 @@ abstract class Schema implements Type
     private $fields = [];
 
     /**
+     * Returns a field by its name.
+     *
+     * @param string $name The field name.
+     * @return Field|null The field or null if it doesn't exist.
+     */
+    public function getField(string $name): ?Field
+    {
+        return $this->fields[$name] ?? null;
+    }
+
+    /**
      * Adds a field to the schema.
      *
      * @param Field $field The field to add.

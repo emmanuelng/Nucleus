@@ -40,8 +40,11 @@ class RouterTest extends TestCase
      */
     public function testExecutesRoute(): void
     {
-        $route1 = $this->addRoute('GET', '/test');
-        $route2 = $this->addRoute('POST', '/test');
+        $route1 = new TestRoute('GET', '/test');
+        $this->router->addRoute($route1);
+
+        $route2 = new TestRoute('POST', '/test');
+        $this->router->addRoute($route2);
 
         $this->sendRequest('GET', 'test/');
 
@@ -72,8 +75,12 @@ class RouterTest extends TestCase
     public function testRejectsDuplicateUrl(string $url1, string $url2): void
     {
         $this->expectException(InvalidRouteException::class);
-        $this->addRoute('GET', $url1);
-        $this->addRoute('GET', $url2);
+
+        $route1 = new TestRoute('GET', $url1);
+        $this->router->addRoute($route1);
+
+        $route2 = new TestRoute('GET', $url2);
+        $this->router->addRoute($route2);
     }
 
     /**
@@ -83,7 +90,9 @@ class RouterTest extends TestCase
      */
     public function testHandlesUndefinedUrls(): void
     {
-        $this->addRoute('GET', '/test');
+        $route = new TestRoute('GET', '/test');
+        $this->router->addRoute($route);
+
         $res = $this->sendRequest('GET', 'undefined/');
         $this->assertEquals(404, $res->code());
     }
@@ -95,7 +104,9 @@ class RouterTest extends TestCase
      */
     public function testHandlesMethodNotAllowed(): void
     {
-        $this->addRoute('GET', '/test');
+        $route = new TestRoute('GET', '/test');
+        $this->router->addRoute($route);
+
         $res = $this->sendRequest('POST', '/test');
         $this->assertEquals(405, $res->code());
     }
@@ -108,7 +119,8 @@ class RouterTest extends TestCase
      */
     public function testFiltersValidRequests(): void
     {
-        $route = $this->addRoute('GET', '/test');
+        $route = new TestRoute('GET', '/test');
+        $this->router->addRoute($route);
 
         $route->setParameterSchema(['a' => ['type' => 'int']]);
         $route->setRequestSchema(['c' => ['type' => 'bool']]);
@@ -136,8 +148,9 @@ class RouterTest extends TestCase
      */
     public function testHandlesInvalidParameters(): void
     {
-        $route = $this->addRoute('GET', '/test');
+        $route = new TestRoute('GET', '/test');
         $route->setParameterSchema(['a' => ['type' => 'int']]);
+        $this->router->addRoute($route);
 
         // Invalid value
         $res = $this->sendRequest('GET', '/test', [], ['a' => 'abc'], []);
@@ -156,35 +169,72 @@ class RouterTest extends TestCase
      */
     public function testHandlesInvalidRequestBody(): void
     {
-        $route = $this->addRoute('GET', '/test');
+        $route = new TestRoute('GET', '/test');
         $route->setRequestSchema(['a' => ['type' => 'int']]);
+        $this->router->addRoute($route);
 
         // Invalid value
         $res = $this->sendRequest('GET', '/test', [], [], ['a' => 'abc']);
         $this->assertEquals(400, $res->code());
 
         // Missing value
-        $res = $this->sendRequest('GET', '/test', [], [], []);
+        $res = $this->sendRequest('GET', '/test');
         $this->assertEquals(400, $res->code());
     }
 
     /**
-     * Adds a route to the router.
+     * Tests whether the router is able to extract URL parameter and to pass
+     * them to the execute method.
      *
-     * @param string $method The request method.
-     * @param string $url The URL.
-     * @param callable $onExecute The callable to execute when the
-     * route is executed.
-     * @return TestRoute The added route.
+     * @return void
      */
-    private function addRoute(
-        string $method,
-        string $url,
-        callable $onExecute = null
-    ): TestRoute {
-        $route = new TestRoute($method, $url, $onExecute);
+    public function testSupportsUrlParameters(): void
+    {
+        $route = new TestRoute('GET', '/test/:p1/abc/:p2');
+        $route->setParameterSchema([
+            'p1' => ['type' => 'int'],
+            'p2' => ['type' => 'string']
+        ]);
+
         $this->router->addRoute($route);
-        return $route;
+
+        $this->sendRequest('GET', '/test/1/abc/test');
+        $this->assertTrue($route->wasExecuted());
+
+        $receivedParams = $route->receivedRequest()->parameters();
+        $this->assertSame(['p1' => 1, 'p2' => 'test'], $receivedParams);
+    }
+
+    /**
+     * Tests that the router handles missing route parameter correctly.
+     *
+     * @return void
+     */
+    public function testHandlesMissingUrlParameter(): void
+    {
+        // Mandatory parameter
+        $route1 = new TestRoute('GET', '/test1/:p');
+        $route1->setParameterSchema([
+            'p' => ['type' => 'int']
+        ]);
+
+        $this->router->addRoute($route1);
+
+        $res1 = $this->sendRequest('GET', '/test1');
+        $this->assertFalse($route1->wasExecuted());
+        $this->assertEquals(404, $res1->code());
+
+        // Optional parameter
+        $route2 = new TestRoute('GET', '/test2/:p');
+        $route2->setParameterSchema([
+            'p' => ['type' => 'int', 'default' => -1]
+        ]);
+
+        $this->router->addRoute($route2);
+
+        $res2 = $this->sendRequest('GET', '/test2');
+        $this->assertTrue($route2->wasExecuted());
+        $this->assertEquals(200, $res2->code());
     }
 
     /**

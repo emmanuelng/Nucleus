@@ -7,6 +7,7 @@ namespace Nucleus\Router\Requests;
 use Nucleus\Router\Exceptions\BadRequestException;
 use Nucleus\Router\Request;
 use Nucleus\Router\Route;
+use Nucleus\Router\Routes\ResolvedRoute;
 use Nucleus\Types\Exceptions\InvalidValueException;
 
 /**
@@ -55,9 +56,9 @@ class FilteredRequest implements Request
      * Initializes the request.
      *
      * @param Request $req The original request
-     * @param Route $route The route for which the request is made
+     * @param ResolvedRoute $route The route
      */
-    public function __construct(Request $req, Route $route)
+    public function __construct(Request $req, ResolvedRoute $route)
     {
         // Set method, url and headers
         $this->method  = $req->method();
@@ -115,17 +116,21 @@ class FilteredRequest implements Request
      * Filters the parameters of the original request and stores them.
      *
      * @param Request $req The original request.
-     * @param Route $route The route
+     * @param ResolvedRoute $route The route
      * @return void
      */
-    private function setParams(Request $req, Route $route): void
+    private function setParams(Request $req, ResolvedRoute $route): void
     {
         try {
             $schema = $route->parameters();
             if ($schema === null) {
                 $this->parameters = [];
             } else {
-                $this->parameters = $schema->filter($req->parameters());
+                $urlParams = $route->urlParameters();
+                $reqParams = $req->parameters();
+                $allParams = array_merge($urlParams, $reqParams);
+
+                $this->parameters = $schema->filter($allParams);
             }
         } catch (InvalidValueException $e) {
             throw new BadRequestException($e->getMessage());
