@@ -142,12 +142,13 @@ class Router
 
             $route->execute($filteredReq, $filteredRes);
             $filteredRes->setCode(200);
+        } catch (HttpException $e) {
+            // HTTP error
+            $res->setCode($e->getCode());
+            $res->setBody(['message' => $e->getMessage()]);
         } catch (Exception $e) {
-            // Determine whether it's an HTTP exception
-            $isHttpException = is_subclass_of($e, HttpException::class);
-
-            // Send response
-            $res->setCode($isHttpException ? $e->getCode() : 500);
+            // System error
+            $res->setCode(500);
             $res->setBody(['message' => $e->getMessage()]);
         }
     }
