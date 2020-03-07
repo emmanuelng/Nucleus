@@ -7,6 +7,7 @@ namespace Nucleus\Router\Responses;
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
 use Nucleus\Router\Routes\ResolvedRoute;
+use Nucleus\Types\Exceptions\InvalidValueException;
 
 /**
  * Represents a filtered response. Wraps a response and makes sure that it is
@@ -62,6 +63,12 @@ class FilteredResponse implements Response
     public function setBody(array $data): void
     {
         $schema = $this->route->responseBody();
+
+        if ($schema === null) {
+            $msg = "The response body must be empty.";
+            throw new InvalidValueException($msg);
+        }
+
         $this->res->setBody($schema->filter($data));
     }
 }
