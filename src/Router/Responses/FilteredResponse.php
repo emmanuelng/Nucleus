@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nucleus\Router\Responses;
 
 use Nucleus\Router\Response;
-use Nucleus\Router\Route;
 use Nucleus\Router\Routes\ResolvedRoute;
 use Nucleus\Types\Exceptions\InvalidValueException;
 
