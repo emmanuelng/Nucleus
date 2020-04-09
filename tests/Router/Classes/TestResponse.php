@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\Classes;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Response;
 
 /**
@@ -28,7 +29,7 @@ class TestResponse implements Response
     /**
      * The response body.
      *
-     * @var array
+     * @var JsonObject
      */
     private $body;
 
@@ -51,7 +52,7 @@ class TestResponse implements Response
     /**
      * {@inheritDoc}
      */
-    public function setBody(array $data): void
+    public function setBody(JsonObject $data): void
     {
         $this->body = $data;
     }
@@ -81,7 +82,7 @@ class TestResponse implements Response
      *
      * @return array
      */
-    public function body(): array
+    public function body(): JsonObject
     {
         return $this->body;
     }

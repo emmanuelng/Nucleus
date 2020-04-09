@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Responses;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Response;
 
 /**
@@ -30,9 +31,9 @@ class ServerResponse implements Response
     /**
      * {@inheritDoc}
      */
-    public function setBody(array $data): void
+    public function setBody(JsonObject $data): void
     {
         $this->setHeader('Content-Type', 'application/json');
-        echo json_encode($data);
+        echo $data;
     }
 }

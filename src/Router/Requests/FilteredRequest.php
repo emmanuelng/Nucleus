@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Requests;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Exceptions\BadRequestException;
 use Nucleus\Router\Request;
 use Nucleus\Router\Route;
 use Nucleus\Router\Routes\ResolvedRoute;
-use Nucleus\Types\Exceptions\InvalidValueException;
+use Nucleus\Schema\Exceptions\InvalidValueException;
+use Nucleus\Schema\Schema;
 
 /**
  * Represents a filtered request, i.e. a safe request for a route. This class
@@ -39,16 +41,16 @@ class FilteredRequest implements Request
     protected $headers;
 
     /**
-     * The (filtered) request parameters.
+     * The request parameters.
      *
      * @var array
      */
     protected $parameters;
 
     /**
-     * The (filtered) request body.
+     * The request body.
      *
-     * @var array
+     * @var JsonObject
      */
     protected $body;
 
@@ -107,7 +109,7 @@ class FilteredRequest implements Request
     /**
      * {@inheritDoc}
      */
-    public final function body(): array
+    public final function body(): JsonObject
     {
         return $this->body;
     }
@@ -148,11 +150,11 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->requestBody();
-            if ($schema === null) {
-                $this->body = [];
-            } else {
-                $this->body = $schema->filter($req->body());
-            }
+            $schema = $schema !== null ? $schema : Schema::loadFromArray([]);
+            $values = $req->body()->values();
+
+            $this->body = new JsonObject($values, $schema);
+
         } catch (InvalidValueException $e) {
             throw new BadRequestException($e->getMessage());
         }

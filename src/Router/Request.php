@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nucleus\Router;
 
+use Nucleus\Json\JsonObject;
+
 /**
  * Represents a router's request.
  */
@@ -42,5 +44,5 @@ interface Request
      *
      * @return array The request body
      */
-    public function body(): array;
+    public function body(): JsonObject;
 }

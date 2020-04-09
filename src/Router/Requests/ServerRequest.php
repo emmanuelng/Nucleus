@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Requests;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Request;
 
 /**
@@ -39,16 +40,16 @@ class ServerRequest implements Request
     /**
      * {@inheritDoc}
      */
-    public final function parameters(): array
+    public final function parameters(): JsonObject
     {
-        return $_GET;
+        return new JsonObject($_GET);
     }
 
     /**
      * {@inheritDoc}
      */
-    public final function body(): array
+    public final function body(): JsonObject
     {
-        return json_decode(file_get_contents('php://input'));
+        return new JsonObject(json_decode(file_get_contents('php://input')));
     }
 }

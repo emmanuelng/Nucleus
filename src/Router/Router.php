@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nucleus\Router;
 
 use Exception;
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Exceptions\HttpException;
 use Nucleus\Router\Exceptions\InvalidRouteException;
 use Nucleus\Router\Policies\DefaultPolicy;
@@ -132,11 +133,11 @@ class Router
         } catch (HttpException $e) {
             // HTTP error
             $res->setCode($e->getCode());
-            $res->setBody(['message' => $e->getMessage()]);
+            $res->setBody(new JsonObject(['message' => $e->getMessage()]));
         } catch (Exception $e) {
             // System error
             $res->setCode(500);
-            $res->setBody(['message' => $e->getMessage()]);
+            $res->setBody(new JsonObject(['message' => $e->getMessage()]));
         }
     }
 

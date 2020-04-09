@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Router;
 
-use Nucleus\Types\Schema;
+use Nucleus\Schema\Schema;
 
 /**
  * Represents a route.

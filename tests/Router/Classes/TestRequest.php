@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\Classes;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Request;
 
 /**
@@ -42,7 +43,7 @@ class TestRequest implements Request
     /**
      * The request body.
      *
-     * @var array
+     * @var JsonObject
      */
     private $body;
 
@@ -57,7 +58,7 @@ class TestRequest implements Request
         $this->url        = $url;
         $this->headers    = $headers;
         $this->parameters = $parameters;
-        $this->body       = $body;
+        $this->body       = new JsonObject($body);
     }
 
     /**
@@ -95,7 +96,7 @@ class TestRequest implements Request
     /**
      * {@inheritDoc}
      */
-    public function body(): array
+    public function body(): JsonObject
     {
         return $this->body;
     }

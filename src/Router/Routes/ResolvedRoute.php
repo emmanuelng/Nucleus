@@ -7,7 +7,7 @@ namespace Nucleus\Router\Routes;
 use Nucleus\Router\Request;
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
-use Nucleus\Types\Schema;
+use Nucleus\Schema\Schema;
 
 /**
  * Represents a route resolved by a Resolver object. Contains the route to
@@ -38,7 +38,7 @@ class ResolvedRoute implements Route
      */
     public function __construct(Route $route, array $urlParameters = [])
     {
-        $this->route = $route;
+        $this->route         = $route;
         $this->urlParameters = $urlParameters;
     }
 

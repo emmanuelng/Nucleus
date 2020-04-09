@@ -7,8 +7,7 @@ namespace Tests\Router\Classes;
 use Nucleus\Router\Request;
 use Nucleus\Router\Response;
 use Nucleus\Router\Route;
-use Nucleus\Types\Schema;
-use Tests\Types\Classes\TestSchema;
+use Nucleus\Schema\Schema;
 
 /**
  * This class is used to test the route class.
@@ -102,7 +101,7 @@ class TestRoute implements Route
      */
     public function setParameterSchema(array $schema): void
     {
-        $this->parameters = new TestSchema($schema);
+        $this->parameters = Schema::loadFromArray($schema);
     }
 
     /**
@@ -113,7 +112,7 @@ class TestRoute implements Route
      */
     public function setRequestSchema(array $schema): void
     {
-        $this->request = new TestSchema($schema);
+        $this->request = Schema::loadFromArray($schema);
     }
 
     /**
@@ -124,7 +123,7 @@ class TestRoute implements Route
      */
     public function setResponseSchema(array $schema): void
     {
-        $this->response = new TestSchema($schema);
+        $this->response = Schema::loadFromArray($schema);
     }
 
     /**

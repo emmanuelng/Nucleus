@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nucleus\Router;
 
+use Nucleus\Json\JsonObject;
+
 /**
  * Represents a router's response.
  */
@@ -32,5 +34,5 @@ interface Response
      * @param array $data Data sent to the sender.
      * @return void
      */
-    public function setBody(array $data): void;
+    public function setBody(JsonObject $data): void;
 }

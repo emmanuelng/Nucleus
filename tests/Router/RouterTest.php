@@ -122,8 +122,8 @@ class RouterTest extends TestCase
         $route = new TestRoute('GET', '/test');
         $this->router->addRoute($route);
 
-        $route->setParameterSchema(['a' => ['type' => 'int']]);
-        $route->setRequestSchema(['c' => ['type' => 'bool']]);
+        $route->setParameterSchema(['a' => ['type' => 'number']]);
+        $route->setRequestSchema(['c' => ['type' => 'boolean']]);
 
         $params = ['a' => '1234', 'b' => 'value'];
         $body   = ['c' => 'true', 'd' => 'value'];
@@ -149,7 +149,7 @@ class RouterTest extends TestCase
     public function testHandlesInvalidParameters(): void
     {
         $route = new TestRoute('GET', '/test');
-        $route->setParameterSchema(['a' => ['type' => 'int']]);
+        $route->setParameterSchema(['a' => ['type' => 'number', 'required' => true]]);
         $this->router->addRoute($route);
 
         // Invalid value
@@ -170,7 +170,7 @@ class RouterTest extends TestCase
     public function testHandlesInvalidRequestBody(): void
     {
         $route = new TestRoute('GET', '/test');
-        $route->setRequestSchema(['a' => ['type' => 'int']]);
+        $route->setRequestSchema(['a' => ['type' => 'number', 'required' => true]]);
         $this->router->addRoute($route);
 
         // Invalid value
@@ -192,8 +192,8 @@ class RouterTest extends TestCase
     {
         $route = new TestRoute('GET', '/test/:p1/abc/:p2');
         $route->setParameterSchema([
-            'p1' => ['type' => 'int'],
-            'p2' => ['type' => 'string']
+            'p1' => ['type' => 'number', 'required' => true],
+            'p2' => ['type' => 'string', 'required' => true]
         ]);
 
         $this->router->addRoute($route);
@@ -215,7 +215,7 @@ class RouterTest extends TestCase
         // Mandatory parameter
         $route1 = new TestRoute('GET', '/test1/:p');
         $route1->setParameterSchema([
-            'p' => ['type' => 'int']
+            'p' => ['type' => 'number', 'required' => true]
         ]);
 
         $this->router->addRoute($route1);
@@ -227,7 +227,7 @@ class RouterTest extends TestCase
         // Optional parameter
         $route2 = new TestRoute('GET', '/test2/:p');
         $route2->setParameterSchema([
-            'p' => ['type' => 'int', 'default' => -1]
+            'p' => ['type' => 'number']
         ]);
 
         $this->router->addRoute($route2);

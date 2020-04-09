@@ -77,13 +77,13 @@ class RegexResolver implements Resolver
                     throw new InvalidRouteException($msg);
                 }
 
-                $paramObj = $paramSchema->getField($paramName);
+                $paramObj = $paramSchema->field($paramName);
                 if ($paramSchema === null) {
                     $msg = "Undefined parameter $paramName";
                     throw new InvalidRouteException($msg);
                 }
 
-                $regex .= $paramObj->isOptional() ? '*\/' : "(.)+\/";
+                $regex .= $paramObj->isRequired() ? "(.)+\/" : '*\/';
                 $params[$paramName] = $curPos;
             } else {
                 // The current part isn't a parameter.

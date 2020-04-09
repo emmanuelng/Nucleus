@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Responses;
 
+use Nucleus\Json\JsonObject;
 use Nucleus\Router\Response;
 use Nucleus\Router\Routes\ResolvedRoute;
-use Nucleus\Types\Exceptions\InvalidValueException;
+use Nucleus\Schema\Exceptions\InvalidValueException;
 
 /**
  * Represents a filtered response. Wraps a response and makes sure that it is
@@ -59,15 +60,15 @@ class FilteredResponse implements Response
     /**
      * {@inheritDoc}
      */
-    public function setBody(array $data): void
+    public function setBody(JsonObject $data): void
     {
-        $schema = $this->route->responseBody();
-
-        if ($schema === null) {
+        try {
+            $schema = $this->route->responseBody();
+            $values = $data->values();
+            $this->res->setBody(new JsonObject($values, $schema));
+        } catch (InvalidValueException $e) {
             $msg = "The response body must be empty.";
             throw new InvalidValueException($msg);
         }
-
-        $this->res->setBody($schema->filter($data));
     }
 }

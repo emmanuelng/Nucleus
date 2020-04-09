@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nucleus\Types\Exceptions;
+namespace Nucleus\Schema\Exceptions;
 
 use Exception;
 
