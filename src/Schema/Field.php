@@ -44,6 +44,7 @@ class Field
 
         $field->required = $array['required'] ?? false;
         $field->list     = $array['isList'] ?? false;
+        $field->hidden   = $array['hidden'] ?? false;
 
         return ($field);
     }
@@ -99,6 +100,13 @@ class Field
     private $required;
 
     /**
+     * Indicates whether this field must be hidden from the public.
+     *
+     * @var bool
+     */
+    private $hidden;
+
+    /**
      * Initializes the field.
      *
      * @param string $name The field's name.
@@ -110,6 +118,7 @@ class Field
         $this->type     = $type;
         $this->list     = false;
         $this->required = false;
+        $this->hidden   = false;
     }
 
     /**
@@ -143,6 +152,16 @@ class Field
                 return $this->type->filter($value);
             }
         }
+    }
+
+    /**
+     * Returns whether this field must be hidden from the public.
+     *
+     * @return boolean True if the field is hidden, false otherwise.
+     */
+    public function isHidden(): bool
+    {
+        return $this->hidden;
     }
 
     /**

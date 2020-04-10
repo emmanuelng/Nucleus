@@ -48,7 +48,24 @@ class JsonObject implements ArrayAccess
      */
     public function __toString()
     {
-        return json_encode($this->values);
+        // If there is no schema, encode the result directly.
+        if ($this->schema === null) {
+            return json_encode($this->values);
+        }
+
+        // Initialize the result.
+        $resultArr = [];
+
+        // Remove hidden fields.
+        foreach ($this->values as $fieldName => $value) {
+            $field = $this->schema->field($fieldName);
+            if ($field != null && !$field->isHidden()) {
+                $resultArr[$fieldName] = $value;
+            }
+        }
+
+        // Encode the result.
+        return json_encode($resultArr);
     }
 
     /**
