@@ -12,7 +12,6 @@ use Nucleus\Router\Policies\DefaultPolicy;
 use Nucleus\Router\Requests\FilteredRequest;
 use Nucleus\Router\Requests\ServerRequest;
 use Nucleus\Router\Resolvers\RegexResolver;
-use Nucleus\Router\Responses\FilteredResponse;
 use Nucleus\Router\Responses\ServerResponse;
 
 /**
@@ -126,10 +125,8 @@ class Router
 
             // Execute the route.
             $filteredReq = new FilteredRequest($req, $route);
-            $filteredRes = new FilteredResponse($res, $route);
-
-            $route->execute($filteredReq, $filteredRes);
-            $filteredRes->setCode(200);
+            $route->execute($filteredReq, $res);
+            $res->setCode(200);
         } catch (HttpException $e) {
             // HTTP error
             $res->setCode($e->getCode());
