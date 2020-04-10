@@ -87,14 +87,6 @@ class ResolvedRoute implements Route
     /**
      * {@inheritDoc}
      */
-    public function responseBody(): ?Schema
-    {
-        return $this->route->responseBody();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function execute(Request $req, Response $res): void
     {
         $this->route->execute($req, $res);

@@ -161,14 +161,6 @@ class TestRoute implements Route
     /**
      * {@inheritDoc}
      */
-    public function responseBody(): ?Schema
-    {
-        return $this->response;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function execute(Request $req, Response $res): void
     {
         $this->wasExecuted     = true;

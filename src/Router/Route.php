@@ -40,13 +40,6 @@ interface Route
     public function requestBody(): ?Schema;
 
     /**
-     * Returns the schema of the response body.
-     *
-     * @return Schema|null The response body schema.
-     */
-    public function responseBody(): ?Schema;
-
-    /**
      * Executes the route.
      *
      * @param Request $req The request.

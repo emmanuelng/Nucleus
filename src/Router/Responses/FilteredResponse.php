@@ -63,9 +63,8 @@ class FilteredResponse implements Response
     public function setBody(JsonObject $data): void
     {
         try {
-            $schema = $this->route->responseBody();
             $values = $data->values();
-            $this->res->setBody(new JsonObject($values, $schema));
+            $this->res->setBody(new JsonObject($values));
         } catch (InvalidValueException $e) {
             $msg = "The response body must be empty.";
             throw new InvalidValueException($msg);
