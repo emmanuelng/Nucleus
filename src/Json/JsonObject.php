@@ -6,6 +6,7 @@ namespace Nucleus\Json;
 
 use ArrayAccess;
 use ArrayIterator;
+use JsonSerializable;
 use Nucleus\Schema\Exceptions\UnknownFieldException;
 use Nucleus\Schema\Schema;
 use Traversable;
@@ -13,7 +14,7 @@ use Traversable;
 /**
  * Reprensents a JSON object.
  */
-class JsonObject implements ArrayAccess
+class JsonObject implements ArrayAccess, JsonSerializable
 {
     /**
      * The schema.
@@ -48,9 +49,17 @@ class JsonObject implements ArrayAccess
      */
     public function __toString()
     {
-        // If there is no schema, encode the result directly.
+        return json_encode($this->jsonSerialize());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        // If there is no schema, return the values directly.
         if ($this->schema === null) {
-            return json_encode($this->values);
+            return $this->values;
         }
 
         // Initialize the result.
@@ -64,8 +73,7 @@ class JsonObject implements ArrayAccess
             }
         }
 
-        // Encode the result.
-        return json_encode($resultArr);
+        return $resultArr;
     }
 
     /**
