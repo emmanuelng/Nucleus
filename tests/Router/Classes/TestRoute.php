@@ -50,13 +50,6 @@ class TestRoute implements Route
     private $request;
 
     /**
-     * The response schema.
-     *
-     * @var Schema
-     */
-    private $response;
-
-    /**
      * Indicates whether the route was executed.
      *
      * @var bool
@@ -101,7 +94,7 @@ class TestRoute implements Route
      */
     public function setParameterSchema(array $schema): void
     {
-        $this->parameters = Schema::loadFromArray($schema);
+        $this->parameters = new Schema($schema);
     }
 
     /**
@@ -112,18 +105,7 @@ class TestRoute implements Route
      */
     public function setRequestSchema(array $schema): void
     {
-        $this->request = Schema::loadFromArray($schema);
-    }
-
-    /**
-     * Sets the response schema.
-     *
-     * @param array $schema The schema
-     * @return void
-     */
-    public function setResponseSchema(array $schema): void
-    {
-        $this->response = Schema::loadFromArray($schema);
+        $this->request = new Schema($schema);
     }
 
     /**

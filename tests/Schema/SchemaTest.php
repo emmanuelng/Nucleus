@@ -17,7 +17,7 @@ class SchemaTest extends TestCase
      */
     public function testAcceptsValidValues(): void
     {
-        $schema = Schema::loadFromArray([
+        $schema = new Schema([
             'number1'  => ['type' => 'number',  'required' => true],
             'number2'  => ['type' => 'number',  'required' => true],
             'string1'  => ['type' => 'string',  'required' => true],
@@ -79,7 +79,7 @@ class SchemaTest extends TestCase
      */
     public function testRemovesUndefinedFields(): void
     {
-        $schema = Schema::loadFromArray(['val' => ['type' => 'number']]);
+        $schema = new Schema(['val' => ['type' => 'number']]);
         $filtered = $schema->filter(['foo' => 45]);
         $this->assertArrayNotHasKey('foo', $filtered);
     }
@@ -92,7 +92,7 @@ class SchemaTest extends TestCase
      */
     public function testAcceptsMissingOptionalValues():void
     {
-        $schema = Schema::loadFromArray(['val' => ['type' => 'number']]);
+        $schema = new Schema(['val' => ['type' => 'number']]);
         $filtered = $schema->filter([]);
         $this->assertSame(['val' => null], $filtered);
     }
@@ -107,6 +107,6 @@ class SchemaTest extends TestCase
     private function assertRejectsArray(array $schema, array $array): void
     {
         $this->expectException(InvalidValueException::class);
-        Schema::loadFromArray($schema)->filter($array);
+        (new Schema($schema))->filter($array);
     }
 }

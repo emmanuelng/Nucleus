@@ -150,7 +150,7 @@ class FilteredRequest implements Request
     {
         try {
             $schema = $route->requestBody();
-            $schema = $schema !== null ? $schema : Schema::loadFromArray([]);
+            $schema = $schema !== null ? $schema : new Schema([]);
             $values = $req->body()->values();
 
             $this->body = new JsonObject($values, $schema);

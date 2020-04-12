@@ -13,42 +13,6 @@ use Nucleus\Schema\Exceptions\InvalidValueException;
 class Schema implements Type
 {
     /**
-     * Builds a schema based on an array.
-     *
-     * @param array $array The array.
-     * @return Schema The built schema.
-     */
-    public static function loadFromArray(array $array): Schema
-    {
-        $schema = new Schema();
-
-        foreach ($array as $fieldName => $fieldArr) {
-            $field = Field::loadFromArray($fieldName, $fieldArr);
-            $schema->addField($field);
-        }
-
-        return $schema;
-    }
-
-    /**
-     * Loads a schema from a JSON file.
-     *
-     * @param string $path The path to the schema file.
-     * @return Schema The built schema
-     */
-    public static function loadFromFile(string $path): Schema
-    {
-        $content = file_get_contents($path);
-        $json    = json_decode($content, true);
-
-        if ($json === NULL) {
-            throw new InvalidSchemaException($path);
-        }
-
-        return self::loadFromArray($json);
-    }
-
-    /**
      * The schema's fields.
      *
      * @var array
@@ -56,11 +20,18 @@ class Schema implements Type
     private $fields;
 
     /**
-     * Constructs an empty schema.
+     * Initializes the schema.
+     *
+     * @param array $array The array representation of the schema.
      */
-    private function __construct()
+    public function __construct(array $array)
     {
         $this->fields = [];
+
+        foreach ($array as $fieldName => $fieldArr) {
+            $field = new Field($fieldName, $fieldArr);
+            $this->addField($field);
+        }
     }
 
     /**

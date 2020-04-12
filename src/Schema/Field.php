@@ -17,61 +17,6 @@ use Nucleus\Schema\Types\StringType;
 class Field
 {
     /**
-     * Builds a field based on an array.
-     *
-     * @param string $name The field's name.
-     * @param array $array The array.
-     * @return Field The built field object.
-     */
-    public static function loadFromArray(string $name, array $array): Field
-    {
-        // Get the field's type
-        $type = $array['type'] ?? null;
-        if ($type == null) {
-            throw new InvalidSchemaException('Missing type.');
-        }
-
-        if (is_array($type)) {
-            $typeObj = Schema::loadFromArray($type);
-        } else if (is_string($type)) {
-            $typeObj = self::getBaseType($type);
-        } else {
-            throw new InvalidSchemaException('Invalid type.');
-        }
-
-        // Create the field
-        $field = new Field($name, $typeObj);
-
-        $field->required = $array['required'] ?? false;
-        $field->list     = $array['isList'] ?? false;
-        $field->hidden   = $array['hidden'] ?? false;
-
-        return ($field);
-    }
-
-    /**
-     * Finds and returns a base (built-in) type.
-     *
-     * @param string $name The base type name.
-     * @return Type The base type object.
-     */
-    private static function getBaseType(string $name): Type
-    {
-        switch ($name) {
-            case 'number':
-                return new NumberType();
-            case 'boolean':
-                return new BooleanType();
-            case 'string':
-                return new StringType();
-            default:
-                break;
-        }
-
-        throw new UnknownTypeException($name);
-    }
-
-    /**
      * The field's name.
      *
      * @var string
@@ -110,15 +55,49 @@ class Field
      * Initializes the field.
      *
      * @param string $name The field's name.
-     * @param Type $type The field's type.
+     * @param array $type The field's array representation.
      */
-    private function __construct(string $name, Type $type)
+    public function __construct(string $name, array $array)
     {
         $this->name     = $name;
-        $this->type     = $type;
-        $this->list     = false;
-        $this->required = false;
-        $this->hidden   = false;
+        $this->required = $array['required'] ?? false;
+        $this->list     = $array['isList'] ?? false;
+        $this->hidden   = $array['hidden'] ?? false;
+
+        // Get the field's type
+        $type = $array['type'] ?? null;
+        if ($type == null) {
+            throw new InvalidSchemaException('Missing type.');
+        }
+
+        $this->type = null;
+
+        // The type is a schema.
+        if (is_array($type)) {
+            $this->type = new Schema($type);
+        }
+
+        // Simple type.
+        if (is_string($type)) {
+            switch ($type) {
+                case 'number':
+                    $this->type = new NumberType();
+                    break;
+                case 'boolean':
+                    $this->type = new BooleanType();
+                    break;
+                case 'string':
+                    $this->type = new StringType();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Type not found.
+        if ($this->type === null) {
+            throw new UnknownTypeException($type);
+        }
     }
 
     /**
