@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nucleus\Schema;
 
-use Nucleus\Schema\Exceptions\InvalidSchemaException;
 use Nucleus\Schema\Exceptions\InvalidValueException;
 
 /**
