@@ -28,8 +28,7 @@ class Schema implements Type
         $this->fields = [];
 
         foreach ($array as $fieldName => $fieldArr) {
-            $field = new Field($fieldName, $fieldArr);
-            $this->addField($field);
+            $this->addField($this->initField($fieldName, $fieldArr));
         }
     }
 
@@ -70,6 +69,18 @@ class Schema implements Type
         }
 
         return $filtered;
+    }
+
+    /**
+     * Initializes a field.
+     *
+     * @param string $name The field name.
+     * @param array $array The field array representation.
+     * @return Field A new field.
+     */
+    protected function initField(string $name, array $array): Field
+    {
+        return new Field($name, $array);
     }
 
     /**
