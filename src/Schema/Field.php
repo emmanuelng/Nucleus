@@ -55,7 +55,7 @@ class Field
      * Initializes the field.
      *
      * @param string $name The field's name.
-     * @param array $type The field's array representation.
+     * @param array $array The field's array representation.
      */
     public function __construct(string $name, array $array)
     {
