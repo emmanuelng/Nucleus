@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Schema;
 
-use Nucleus\Schema\Exceptions\InvalidSchemaException;
+use Exception;
 use Nucleus\Schema\Exceptions\InvalidValueException;
 use Nucleus\Schema\Exceptions\UnknownTypeException;
 use Nucleus\Schema\Types\BooleanType;
@@ -26,7 +26,7 @@ class Field
     /**
      * The field's type.
      *
-     * @var Type
+     * @var Type|Schema
      */
     private $type;
 
@@ -60,44 +60,10 @@ class Field
     public function __construct(string $name, array $array)
     {
         $this->name     = $name;
+        $this->type     = self::stringToType($array['type'] ?? null);
         $this->required = $array['required'] ?? false;
-        $this->list     = $array['isList'] ?? false;
+        $this->list     = $array['list'] ?? false;
         $this->hidden   = $array['hidden'] ?? false;
-
-        // Get the field's type
-        $type = $array['type'] ?? null;
-        if ($type == null) {
-            throw new InvalidSchemaException('Missing type.');
-        }
-
-        $this->type = null;
-
-        // The type is a schema.
-        if (is_array($type)) {
-            $this->type = new Schema($type);
-        }
-
-        // Simple type.
-        if (is_string($type)) {
-            switch ($type) {
-                case 'number':
-                    $this->type = new NumberType();
-                    break;
-                case 'boolean':
-                    $this->type = new BooleanType();
-                    break;
-                case 'string':
-                    $this->type = new StringType();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // Type not found.
-        if ($this->type === null) {
-            throw new UnknownTypeException($type);
-        }
     }
 
     /**
@@ -108,6 +74,16 @@ class Field
     public function name(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the field's type.
+     *
+     * @return Type The type.
+     */
+    public function type(): Type
+    {
+        return $this->type;
     }
 
     /**
@@ -154,6 +130,21 @@ class Field
     }
 
     /**
+     * Returns the array representation of the field.
+     *
+     * @return array The array representation.
+     */
+    public function toArray(): array
+    {
+        return [
+            'type'     => self::typeToString($this->type),
+            'required' => $this->required,
+            'list'     => $this->list,
+            'hidden'   => $this->hidden
+        ];
+    }
+
+    /**
      * Filters a list value.
      *
      * @param mixed $value The value to filter.
@@ -176,5 +167,60 @@ class Field
         }
 
         return $filtered;
+    }
+
+    /**
+     * Returns the string (or array) representation of a type.
+     *
+     * @return string|array The string of the array, or an array if the type is
+     * a schema type.
+     */
+    private static function typeToString($type)
+    {
+        if ($type instanceof Schema) {
+            return $type->toArray();
+        }
+
+        if ($type instanceof NumberType) {
+            return 'number';
+        }
+
+        if ($type instanceof BooleanType) {
+            return 'boolean';
+        }
+
+        if ($type instanceof StringType) {
+            return 'string';
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts a string (or an array) to a type object.
+     *
+     * @param string|array $type A string representing the type (or an array if
+     * it is a schema type).
+     * @return Type The corresponding type object.
+     */
+    private static function stringToType($type): Type
+    {
+        if (is_array($type)) {
+            return new Schema($type);
+        }
+
+        if ($type === 'number') {
+            return new NumberType();
+        }
+
+        if ($type === 'boolean') {
+            return new BooleanType();
+        }
+
+        if ($type == 'string') {
+            return new StringType();
+        }
+
+        throw new UnknownTypeException(strval($type));
     }
 }

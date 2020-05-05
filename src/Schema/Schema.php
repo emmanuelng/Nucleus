@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Schema;
 
+use Exception;
 use Nucleus\Schema\Exceptions\InvalidValueException;
 
 /**
@@ -28,7 +29,7 @@ class Schema implements Type
         $this->fields = [];
 
         foreach ($array as $fieldName => $fieldArr) {
-            $this->addField($this->initField($fieldName, $fieldArr));
+            $this->addField(new Field($fieldName, $fieldArr));
         }
     }
 
@@ -72,15 +73,19 @@ class Schema implements Type
     }
 
     /**
-     * Initializes a field.
+     * Returns an array representing this schema.
      *
-     * @param string $name The field name.
-     * @param array $array The field array representation.
-     * @return Field A new field.
+     * @return array The array.
      */
-    protected function initField(string $name, array $array): Field
+    public function toArray(): array
     {
-        return new Field($name, $array);
+        $array = [];
+
+        foreach ($this->fields as $name => $field) {
+            $array[$name] = $field->toArray();
+        }
+
+        return $array;
     }
 
     /**
