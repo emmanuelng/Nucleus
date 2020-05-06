@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Nucleus\Router;
 
-use Nucleus\Json\JsonObject;
-
 /**
  * Represents a router's response.
  */

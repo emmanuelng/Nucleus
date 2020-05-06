@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nucleus\Router;
 
 use Exception;
-use Nucleus\Json\JsonObject;
 use Nucleus\Router\Exceptions\HttpException;
 use Nucleus\Router\Exceptions\InvalidRouteException;
 use Nucleus\Router\Policies\DefaultPolicy;

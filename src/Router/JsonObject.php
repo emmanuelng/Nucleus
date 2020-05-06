@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nucleus\Json;
+namespace Nucleus\Router;
 
 use ArrayAccess;
 use ArrayIterator;
@@ -143,27 +143,11 @@ class JsonObject implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * Sets the values of this values based with another iterable.
+     * Returns the values stored in the object.
      *
-     * @param iterable $values The values to set.
-     * @param boolean $ignoreNull If true, skips the null values.
-     * @return void
+     * @return array The values in an associative array.
      */
-    public function setAll(iterable $values, bool $ignoreNull = false): void
-    {
-        foreach ($values as $offset => $value) {
-            if (!$ignoreNull || $value !== null) {
-                $this[$offset] = $value;
-            }
-        }
-    }
-
-    /**
-     * Returns the values contained by this object as an associative array.
-     *
-     * @return array The object's values.
-     */
-    public function values(): array
+    public function getValues(): array
     {
         return $this->values;
     }

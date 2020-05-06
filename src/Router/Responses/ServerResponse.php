@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Responses;
 
-use Nucleus\Json\JsonObject;
+use Nucleus\Router\JsonObject;
 use Nucleus\Router\Response;
 
 /**

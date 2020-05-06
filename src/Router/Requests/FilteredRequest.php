@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Requests;
 
-use Nucleus\Json\JsonObject;
 use Nucleus\Router\Exceptions\BadRequestException;
+use Nucleus\Router\JsonObject;
 use Nucleus\Router\Request;
 use Nucleus\Router\Route;
 use Nucleus\Router\Routes\ResolvedRoute;
@@ -151,7 +151,7 @@ class FilteredRequest implements Request
         try {
             $schema = $route->requestBody();
             $schema = $schema !== null ? $schema : new Schema([]);
-            $values = $req->body()->values();
+            $values = $req->body()->getValues();
 
             $this->body = new JsonObject($values, $schema);
 
