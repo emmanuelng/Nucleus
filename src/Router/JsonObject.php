@@ -19,7 +19,7 @@ class JsonObject implements ArrayAccess, JsonSerializable
     /**
      * The schema.
      *
-     * @var JsonSchema
+     * @var Schema
      */
     private $schema;
 

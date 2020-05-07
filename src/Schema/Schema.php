@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nucleus\Schema;
 
-use Exception;
+use ArrayAccess;
 use Nucleus\Schema\Exceptions\InvalidValueException;
 
 /**
@@ -59,11 +59,14 @@ class Schema implements Type
      */
     public function filter($value)
     {
-        if (!is_array($value)) {
-            $msg = "The value must be an associative array.";
+        // Only accept arrays and ArrayAccess objects.
+        $isArrayObj = $value instanceof ArrayAccess;
+        if (!$isArrayObj && !is_array($value)) {
+            $msg = "The value must be an array or implement ArrayAccess.";
             throw new InvalidValueException($msg);
         }
 
+        // Filter the values.
         $filtered = [];
         foreach ($this->fields as $name => $fieldObj) {
             $filtered[$name] = $fieldObj->filter($value[$name] ?? null);
