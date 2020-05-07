@@ -41,6 +41,7 @@ class MigrationTest extends TestCase
         ], $migration->toArray());
 
         $this->assertNotNull($migration->schema());
+        $this->assertEquals(Migration::ACTION_CREATE, $migration->toArray()['action']);
 
         // Test invalid schema arrays.
         try {
@@ -68,9 +69,11 @@ class MigrationTest extends TestCase
         }
 
         // Test valid cases.
-        $migration = new Migration();
-        $migration = $migration->create([])->delete();
-        $this->assertNull($migration);
+        $migration = (new Migration())->create([]);
+        $res = $migration->delete();
+
+        $this->assertNull($res);
+        $this->assertEquals(Migration::ACTION_DELETE, $migration->toArray()['action']);
     }
 
     /**

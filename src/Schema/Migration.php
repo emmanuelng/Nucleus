@@ -109,6 +109,7 @@ class Migration
             throw new MigrationErrorException($msg);
         }
 
+        $this->setAction(self::ACTION_DELETE);
         $this->schemaArr = null;
     }
 
@@ -195,9 +196,23 @@ class Migration
 
         try {
             $oldFieldArr = $this->schemaArr[$name];
-            $newFieldArr = array_merge($oldFieldArr, $newValues);
 
+            // Only keep values that are different from the original ones.
+            foreach ($newValues as $property => $value) {
+                if (!isset($oldFieldArr[$property])) {
+                    unset($newValues[$property]);
+                }
+
+                if ($oldFieldArr[$property] === $value) {
+                    unset($newValues[$property]);
+                }
+            }
+
+            // Create a field with the new values.
+            $newFieldArr = array_merge($oldFieldArr, $newValues);
             $field = new Field($name, $newFieldArr);
+
+            // Modify the schema and set the migration parameters.
             $this->schemaArr[$name] = $field->toArray();
             $this->parameters = ['name' => $name, 'values' => $newValues];
 
@@ -226,19 +241,30 @@ class Migration
      */
     public function toArray(): array
     {
-        // Get the next migration.
+        // Get the next migration. The next migration must be null if it isn't
+        // configured yet (i.e. its action isn't set).
         $next = null;
         if ($this->next !== null && $this->next->action !== null) {
-            $next = $this->next->toArray();
+            $next = $this->next;
         }
 
-        // Build the array.
+        // Convert to array.
         return [
             'action'     => $this->action,
             'parameters' => $this->parameters,
             'schema'     => $this->schemaArr,
             'next'       => $next
         ];
+    }
+
+    /**
+     * Returns the last element of the chain that this migration is part of.
+     *
+     * @return Migration The last migration of the chain.
+     */
+    public function getLast(): Migration
+    {
+        return $this->next === null ? $this : $this->next->getLast();
     }
 
     /**
