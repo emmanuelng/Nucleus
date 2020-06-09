@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Nucleus\Router;
 
 /**
- * Represents a router's request.
+ * Represents a request.
  */
 interface Request
 {

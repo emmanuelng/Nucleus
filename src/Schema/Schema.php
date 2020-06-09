@@ -47,6 +47,7 @@ class Schema implements Type
      * Returns the field corresponding to the given name.
      *
      * @param string $name The field's name.
+     *
      * @return Field|null The field object or null if it doesn't exist.
      */
     public function field(string $name): ?Field
@@ -95,6 +96,7 @@ class Schema implements Type
      * Adds a field to the schema.
      *
      * @param Field $field The field to add.
+     *
      * @return void
      */
     private function addField(Field $field)

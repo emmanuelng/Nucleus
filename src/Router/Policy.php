@@ -26,29 +26,26 @@ interface Policy
     const DEFAULT_HEADERS = null;
 
     /**
-     * Returns the allowed request origins. If all origins are accepted, this
-     * method must return null.
+     * Returns the allowed request origins.
      *
      * @return array|null The list of allowed origins or null if all of them
-     * are allowed.
+     *                    are allowed.
      */
     public function allowedOrigins(): ?array;
 
     /**
-     * Returns the allowed request methods. If all methods are accepted, this
-     * method must return null.
+     * Returns the allowed request methods.
      *
      * @return array|null The list of allowed methods or null if all of them
-     * are allowed.
+     *                    are allowed.
      */
     public function allowedMethods(): ?array;
 
     /**
-     * Returns the allowed request headers. If all headers are accepted, this
-     * method must return null.
+     * Returns the allowed request headers.
      *
      * @return array|null The list of allowed headers or null if all of them
-     * are allowed.
+     *                    are allowed.
      */
     public function allowedHeaders(): ?array;
 }

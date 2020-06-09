@@ -26,7 +26,7 @@ interface Route
     public function url(): string;
 
     /**
-     * Returns the schema of the route's parameters.
+     * Returns the schema of the parameters of the route.
      *
      * @return Schema|null The parameter's schema.
      */
@@ -42,8 +42,9 @@ interface Route
     /**
      * Executes the route.
      *
-     * @param Request $req The request.
+     * @param Request  $req The request.
      * @param Response $res The response.
+     *
      * @return void
      */
     public function execute(Request $req, Response $res): void;

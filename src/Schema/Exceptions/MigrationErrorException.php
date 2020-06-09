@@ -6,10 +6,19 @@ namespace Nucleus\Schema\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown to indicate that a schema migration is not correctly
+ * configured, or that an error occured while executing a migration.
+ */
 class MigrationErrorException extends Exception
 {
-    public function __construct(string $msg)
+    /**
+     * Initializes the exception.
+     *
+     * @param string $message The message to display.
+     */
+    public function __construct(string $message)
     {
-        parent::__construct($msg);
+        parent::__construct($message);
     }
 }

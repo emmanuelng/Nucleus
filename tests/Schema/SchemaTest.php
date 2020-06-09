@@ -101,7 +101,8 @@ class SchemaTest extends TestCase
      * Asserts that a schema rejects a given array.
      *
      * @param array $schema The array representaion of the schema.
-     * @param array $array The array.
+     * @param array $array  The array.
+     *
      * @return void
      */
     private function assertRejectsArray(array $schema, array $array): void

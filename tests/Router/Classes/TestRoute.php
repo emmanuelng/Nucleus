@@ -66,10 +66,10 @@ class TestRoute implements Route
     /**
      * Initializes the test route.
      *
-     * @param string $method The request method.
-     * @param string $url The URL.
+     * @param string   $method    The request method.
+     * @param string   $url       The URL.
      * @param callable $onExecute The callback to execute when the route
-     * is executed.
+     *                            is executed.
      */
     public function __construct(
         string $method,
@@ -90,6 +90,7 @@ class TestRoute implements Route
      * Sets the parameter schema of the route.
      *
      * @param array $schema The schema.
+     *
      * @return void
      */
     public function setParameterSchema(array $schema): void
@@ -101,6 +102,7 @@ class TestRoute implements Route
      * Sets the request schema.
      *
      * @param array $schema The schema.
+     *
      * @return void
      */
     public function setRequestSchema(array $schema): void
@@ -168,7 +170,7 @@ class TestRoute implements Route
      * Returns the request object received in the `execute()` method. Returns
      * null if the route was not executed.
      *
-     * @return Request|null
+     * @return Request|null The received request.
      */
     public function receivedRequest(): ?Request
     {

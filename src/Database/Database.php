@@ -12,6 +12,10 @@ use Nucleus\Schema\Schema;
  * Class representing a database. A database must be able to execute queries,
  * and evolve through migrations. It is responsible for storing the last
  * migration executed for each schema it supports.
+ *
+ * A database implementation must implement two methods:
+ *  - `executeQuery()`, which executes a query and returns its result
+ *  - `executeMigration()`, which updates a schema with a migration.
  */
 abstract class Database
 {
@@ -26,25 +30,47 @@ abstract class Database
      * Executes a query.
      *
      * @param Query $query The query to execute.
+     *
      * @return mixed The result of the query
+     *
+     * @throws DatabaseQueryException When the query relates to a schema that
+     * is not supported by the database, or when the database cannot execute
+     * the query.
+     *
+     * @throws DatabaseInternalError When the query action is not supported by
+     * the database.
      */
-    public abstract function executeQuery(Query $query);
+    abstract public function executeQuery(Query $query);
 
     /**
      * Executes a migration.
      *
      * @param string $schema The name of the schema concerned by the migration.
      * @param Migration $migration The migration to execute.
+     *
      * @return void
+     *
+     * @throws DatabaseMigrationException If the database could not execute the
+     * migration.
+     *
+     * @throws DatabaseInternalError When the migration action is not supported
+     * by the database.
      */
-    protected abstract function executeMigration(string $schema, Migration $migration): void;
+    abstract protected function executeMigration(
+        string $schema,
+        Migration $migration
+    ): void;
 
     /**
      * Adds a schema to the database.
      *
-     * @param string $name The name of the schema.
-     * @param array $array The array representation of the schema.
+     * @param string $name  The name of the schema.
+     * @param array  $array The array representation of the schema.
+     *
      * @return void
+     *
+     * @throws DatabaseInternalException If a schema with the same name already
+     * exists in the database.
      */
     public function addSchema(string $name, array $array): void
     {
@@ -66,6 +92,7 @@ abstract class Database
      * have not been executed are not taken into account.
      *
      * @param string $name The name of the schema.
+     *
      * @return Schema|null The schema, or null if it doesn't exist.
      */
     public function getSchema(string $name): ?Schema
@@ -80,8 +107,12 @@ abstract class Database
     /**
      * Starts a query on a schema.
      *
-     * @param string $schema The schema that is queried.
+     * @param string $schema The schema that is being queried.
+     *
      * @return Query A new query.
+     *
+     * @throws DatabaseInternalException If the requested schema is not
+     * supported by the database.
      */
     public function query(string $schema): Query
     {
@@ -94,11 +125,12 @@ abstract class Database
     }
 
     /**
-     * Returns the next migration to be run for a schema. Note that adding
-     * migrations will not directly update the database. You must call the
-     * "update" method to do so.
+     * Adds a new migration to a schema. Note that this method does not
+     * directly update the database. You must call the "update" method to
+     * perform new migrations.
      *
      * @param string $schema The name of the schema.
+     *
      * @return Migration|null The migration, or null if the schema is not
      * supported by the schema.
      */
@@ -144,7 +176,14 @@ abstract class Database
      * Updates a schema.
      *
      * @param string $name The name of the schema to update.
+     *
      * @return boolean True if the schema is up-to-date, false otherwise.
+     *
+     * @throws DatabaseMigrationException If the database could not execute a
+     * migration.
+     *
+     * @throws DatabaseInternalError If there is a migration with an action
+     * that is not supported by the database.
      */
     private function updateSchema(string $name): bool
     {

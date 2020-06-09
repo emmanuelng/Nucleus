@@ -12,7 +12,7 @@ use Nucleus\Schema\Schema;
 use Traversable;
 
 /**
- * Reprensents a JSON object.
+ * Represents a JSON object.
  */
 class JsonObject implements ArrayAccess, JsonSerializable
 {
@@ -24,16 +24,16 @@ class JsonObject implements ArrayAccess, JsonSerializable
     private $schema;
 
     /**
-     * The underlying JSON values.
+     * The object's values.
      *
      * @var array
      */
     private $values;
 
     /**
-     * Initializes a JSON entity.
+     * Initializes the JSON object.
      *
-     * @param array $values The initial values.
+     * @param array       $values The initial values.
      * @param Schema|null $schema The schema
      */
     public function __construct(array $values = [], ?Schema $schema = null)

@@ -57,7 +57,7 @@ class FilteredRequest implements Request
     /**
      * Initializes the request.
      *
-     * @param Request $req The original request
+     * @param Request       $req   The original request
      * @param ResolvedRoute $route The route
      */
     public function __construct(Request $req, ResolvedRoute $route)
@@ -117,9 +117,12 @@ class FilteredRequest implements Request
     /**
      * Filters the parameters of the original request and stores them.
      *
-     * @param Request $req The original request.
-     * @param ResolvedRoute $route The route
+     * @param Request       $req   The original request.
+     * @param ResolvedRoute $route The route.
+     *
      * @return void
+     *
+     * @throws BadRequestException If a value is invalid.
      */
     private function setParams(Request $req, ResolvedRoute $route): void
     {
@@ -142,9 +145,12 @@ class FilteredRequest implements Request
     /**
      * Filters the body of the original request and stores it.
      *
-     * @param Request $req The original request
-     * @param Route $route The route
+     * @param Request $req   The original request
+     * @param Route   $route The route
+     *
      * @return void
+     *
+     * @throws BadRequestException If a value is invalid.
      */
     private function setBody(Request $req, Route $route): void
     {
@@ -154,7 +160,6 @@ class FilteredRequest implements Request
             $values = $req->body()->getValues();
 
             $this->body = new JsonObject($values, $schema);
-
         } catch (InvalidValueException $e) {
             throw new BadRequestException($e->getMessage());
         }

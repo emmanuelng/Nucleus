@@ -22,7 +22,7 @@ class Record implements ArrayAccess, JsonSerializable
     private $schema;
 
     /**
-     * The underlying JSON values.
+     * The values stored in the record.
      *
      * @var array
      */
@@ -32,7 +32,7 @@ class Record implements ArrayAccess, JsonSerializable
      * Initializes the record.
      *
      * @param Schema $schema The schema.
-     * @param array $values The values.
+     * @param array  $values The values.
      */
     public function __construct(Schema $schema, array $values = [])
     {
@@ -71,6 +71,9 @@ class Record implements ArrayAccess, JsonSerializable
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnknownFieldException If the offset is not the name of a field
+     * in the schema.
      */
     public function offsetGet($offset)
     {
@@ -78,11 +81,14 @@ class Record implements ArrayAccess, JsonSerializable
             throw new UnknownFieldException($offset);
         }
 
-        return $this->values[$offset];
+        return $this->values[$offset] ?? null;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnknownFieldException If the offset is not the name of a field
+     * in the schema.
      */
     public function offsetSet($offset, $value)
     {
@@ -97,6 +103,9 @@ class Record implements ArrayAccess, JsonSerializable
 
     /**
      * {@inheritDoc}
+     *
+     * @throws UnknownFieldException If the offset is not the name of a field
+     * in the schema.
      */
     public function offsetUnset($offset)
     {

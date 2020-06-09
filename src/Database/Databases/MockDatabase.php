@@ -13,7 +13,7 @@ use Nucleus\Database\Selector;
 use Nucleus\Schema\Migration;
 
 /**
- * A database that stores its records in memory. Used mainly for testing.
+ * A database implementation that stores its records in memory.
  */
 class MockDatabase extends Database
 {
@@ -51,7 +51,6 @@ class MockDatabase extends Database
         $records = &$this->records[$schemaName];
 
         switch ($queryArray['action']) {
-
             case Query::ACTION_CREATE:
                 $records[] = $values;
                 return new Record($schema, $values);
@@ -83,6 +82,8 @@ class MockDatabase extends Database
                 return;
 
             default:
+                $msg = 'Unsupported query action ' . $queryArray['action'];
+                throw new DatabaseInternalException($msg);
                 break;
         }
     }
@@ -95,7 +96,6 @@ class MockDatabase extends Database
         $array = $migration->toArray();
 
         switch ($array['action']) {
-
             case Migration::ACTION_CREATE:
                 $this->records[$schema] = [];
                 break;
@@ -143,8 +143,9 @@ class MockDatabase extends Database
     /**
      * Returns whether a record is selected.
      *
-     * @param array|null $where The 'where' array.
-     * @param array $record The record to test.
+     * @param array|null $where  The 'where' array.
+     * @param array      $record The record to test.
+     *
      * @return boolean True if the record is selected, false otherwise.
      */
     private function isSelected(?array $where, array $record): bool
@@ -165,7 +166,6 @@ class MockDatabase extends Database
 
             // Evaluate the following conditions
             switch ($condition['operand']) {
-
                 case Selector::OPERAND_AND:
                     $selected &= $this->evaluateCondition($condition, $record);
                     break;
@@ -186,7 +186,8 @@ class MockDatabase extends Database
      * Evaluates a condition on a record.
      *
      * @param array $condition The condition.
-     * @param array $record The record.
+     * @param array $record    The record.
+     *
      * @return boolean The condition result.
      */
     private function evaluateCondition(array $condition, array $record): bool
@@ -199,7 +200,6 @@ class MockDatabase extends Database
 
         // Otherwise, evaluate the condition itself.
         switch ($condition['operator']) {
-
             case Selector::OPERATOR_EQ:
                 $key = $condition['left'];
                 return $record[$key] == $condition['right'];

@@ -86,6 +86,7 @@ class Selector
      * Adds a sub-condition.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function where(callable $builder): Selector
@@ -106,6 +107,7 @@ class Selector
      * Adds a negated sub-condition.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function notWhere(callable $builder): Selector
@@ -126,6 +128,7 @@ class Selector
      * Adds a sub-condition with the 'and' operand.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function andWhere(callable $builder): Selector
@@ -146,6 +149,7 @@ class Selector
      * Adds a sub-condition with the 'and not' operand.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function andNotWhere(callable $builder): Selector
@@ -166,6 +170,7 @@ class Selector
      * Adds a sub-condition with the 'or' operand.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function orWhere(callable $builder): Selector
@@ -186,6 +191,7 @@ class Selector
      * Adds a sub-condition with the 'or not' operand.
      *
      * @param callable $builder A callable that takes a Selector as parameter.
+     *
      * @return Selector This selector.
      */
     public function orNotWhere(callable $builder): Selector
@@ -205,8 +211,9 @@ class Selector
     /**
      * Adds an "equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function eq(string $left, $right): Selector
@@ -225,8 +232,9 @@ class Selector
     /**
      * Adds a "not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notEq(string $left, $right): Selector
@@ -245,8 +253,9 @@ class Selector
     /**
      * Adds an "and equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andEq(string $left, $right): Selector
@@ -265,8 +274,9 @@ class Selector
     /**
      * Adds an "and not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotEq(string $left, $right): Selector
@@ -285,8 +295,9 @@ class Selector
     /**
      * Adds an "or equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orEq(string $left, $right): Selector
@@ -305,8 +316,9 @@ class Selector
     /**
      * Adds an "or not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotEq(string $left, $right): Selector
@@ -325,8 +337,9 @@ class Selector
     /**
      * Adds a "not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function neq(string $left, $right): Selector
@@ -345,8 +358,9 @@ class Selector
     /**
      * Adds a "not not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notNeq(string $left, $right): Selector
@@ -365,8 +379,9 @@ class Selector
     /**
      * Adds an "and not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNeq(string $left, $right): Selector
@@ -385,8 +400,9 @@ class Selector
     /**
      * Adds an "and not not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotNeq(string $left, $right): Selector
@@ -405,8 +421,9 @@ class Selector
     /**
      * Adds an "or not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNeq(string $left, $right): Selector
@@ -425,8 +442,9 @@ class Selector
     /**
      * Adds an "or not not equals" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotNeq(string $left, $right): Selector
@@ -445,8 +463,9 @@ class Selector
     /**
      * Adds a "greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function gt(string $left, $right): Selector
@@ -465,8 +484,9 @@ class Selector
     /**
      * Adds a "not greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notGt(string $left, $right): Selector
@@ -485,8 +505,9 @@ class Selector
     /**
      * Adds an "and greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andGt(string $left, $right): Selector
@@ -505,8 +526,9 @@ class Selector
     /**
      * Adds an "and not greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotGt(string $left, $right): Selector
@@ -525,8 +547,9 @@ class Selector
     /**
      * Adds an "or greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orGt(string $left, $right): Selector
@@ -545,8 +568,9 @@ class Selector
     /**
      * Adds an "or not greater than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotGt(string $left, $right): Selector
@@ -565,8 +589,9 @@ class Selector
     /**
      * Adds a "less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function lt(string $left, $right): Selector
@@ -585,8 +610,9 @@ class Selector
     /**
      * Adds a "not less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notLt(string $left, $right): Selector
@@ -605,8 +631,9 @@ class Selector
     /**
      * Adds an "and less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andLt(string $left, $right): Selector
@@ -625,8 +652,9 @@ class Selector
     /**
      * Adds an "and not less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotLt(string $left, $right): Selector
@@ -645,8 +673,9 @@ class Selector
     /**
      * Adds an "or less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orLt(string $left, $right): Selector
@@ -665,8 +694,9 @@ class Selector
     /**
      * Adds an "or not less than" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotLt(string $left, $right): Selector
@@ -685,8 +715,9 @@ class Selector
     /**
      * Adds a "greaterthan or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function gte(string $left, $right): Selector
@@ -705,8 +736,9 @@ class Selector
     /**
      * Adds a "not greater than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notGte(string $left, $right): Selector
@@ -725,8 +757,9 @@ class Selector
     /**
      * Adds an "and greater than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andGte(string $left, $right): Selector
@@ -745,8 +778,9 @@ class Selector
     /**
      * Adds an "and not greater than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotGte(string $left, $right): Selector
@@ -765,8 +799,9 @@ class Selector
     /**
      * Adds an "or greater than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orGte(string $left, $right): Selector
@@ -785,8 +820,9 @@ class Selector
     /**
      * Adds an "or not greater than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotGte(string $left, $right): Selector
@@ -805,8 +841,9 @@ class Selector
     /**
      * Adds a "less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function lte(string $left, $right): Selector
@@ -825,8 +862,9 @@ class Selector
     /**
      * Adds a "not less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notLte(string $left, $right): Selector
@@ -845,8 +883,9 @@ class Selector
     /**
      * Adds an "and less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andLte(string $left, $right): Selector
@@ -865,8 +904,9 @@ class Selector
     /**
      * Adds an "and not less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotLte(string $left, $right): Selector
@@ -885,8 +925,9 @@ class Selector
     /**
      * Adds an "or less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orLte(string $left, $right): Selector
@@ -905,8 +946,9 @@ class Selector
     /**
      * Adds an "or not less than or equal" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotLte(string $left, $right): Selector
@@ -925,8 +967,9 @@ class Selector
     /**
      * Adds a "like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function like(string $left, $right): Selector
@@ -945,8 +988,9 @@ class Selector
     /**
      * Adds a "not like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function notLike(string $left, $right): Selector
@@ -965,8 +1009,9 @@ class Selector
     /**
      * Adds an "and like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andLike(string $left, $right): Selector
@@ -985,8 +1030,9 @@ class Selector
     /**
      * Adds an "and not like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function andNotLike(string $left, $right): Selector
@@ -1005,8 +1051,9 @@ class Selector
     /**
      * Adds an "or like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orLike(string $left, $right): Selector
@@ -1025,8 +1072,9 @@ class Selector
     /**
      * Adds an "or not like" condition.
      *
-     * @param string $left The left-hand side.
-     * @param mixed $right The right-hand side.
+     * @param string $left  The left-hand side.
+     * @param mixed  $right The right-hand side.
+     *
      * @return Selector This selector.
      */
     public function orNotLike(string $left, $right): Selector
@@ -1101,11 +1149,12 @@ class Selector
     /**
      * Adds a condition to the selector.
      *
-     * @param string|null $operand The operand.
-     * @param boolean $not True if the condition is negated.
-     * @param string $left The left-hand-side.
+     * @param string|null $operand  The operand.
+     * @param boolean     $not      True if the condition is negated.
+     * @param string      $left     The left-hand-side.
      * @param string|null $operator The operator.
-     * @param mixed $right The right-hand-side.
+     * @param mixed       $right    The right-hand-side.
+     *
      * @return void
      */
     private function addCondition(
@@ -1138,9 +1187,10 @@ class Selector
     /**
      * Adds a sub-condition.
      *
-     * @param string|null $operand The operand.
-     * @param boolean $not True if the condition is negated.
-     * @param Selector $condition The sub-condition.
+     * @param string|null $operand   The operand.
+     * @param boolean     $not       True if the condition is negated.
+     * @param Selector    $condition The sub-condition.
+     *
      * @return void
      */
     private function addSubCondition(

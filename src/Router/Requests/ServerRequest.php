@@ -9,7 +9,6 @@ use Nucleus\Router\Request;
 
 /**
  * Represents a server request.
- * All inputs are taken from PHP's default inputs.
  */
 class ServerRequest implements Request
 {

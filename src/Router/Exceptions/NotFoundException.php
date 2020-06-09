@@ -4,26 +4,19 @@ declare(strict_types=1);
 
 namespace Nucleus\Router\Exceptions;
 
+/**
+ * Represents a 'not found' error. Thrown to indicate that the server can't
+ * find the requested resource.
+ */
 class NotFoundException extends HttpException
 {
-    private $method;
-    private $url;
-
-    public function __construct(string $method, string $url)
+    /**
+     * Initializes the exception.
+     *
+     * @param string $message The message to display.
+     */
+    public function __construct(string $msg = null)
     {
-        parent::__construct("Not found.", 404);
-
-        $this->method = $method;
-        $this->url    = $url;
-    }
-
-    public function method(): string
-    {
-        return $this->method;
-    }
-
-    public function url(): string
-    {
-        return $this->url;
+        parent::__construct($msg === null ? "Not found." : $msg, 404);
     }
 }

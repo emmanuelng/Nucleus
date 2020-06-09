@@ -79,9 +79,12 @@ class Query
     /**
      * Initializes the query.
      *
-     * @param Database $database The database.
-     * @param string $schemaName The name of the schema associated to this
-     * query.
+     * @param Database $database   The database.
+     * @param string   $schemaName The name of the schema associated to this
+     *                             query.
+     *
+     * @throws DatabaseInternalException If the database does not support the
+     * requested schema.
      */
     public function __construct(Database $database, string $schemaName)
     {
@@ -97,7 +100,7 @@ class Query
         if ($this->schema === null) {
             $msg = "The schema $schemaName is not supported by the database "
                 . "or does not exist.";
-            throw new DatabaseQueryException($msg);
+            throw new DatabaseInternalException($msg);
         }
     }
 
@@ -119,6 +122,10 @@ class Query
      * Gets records.
      *
      * @return array An array of recors.
+     *
+     * @throws DatabaseInternalException If the results returned by the
+     * database are invalid. A database is supposed to return a set of Record
+     * instances.
      */
     public function getAll(): array
     {
@@ -150,7 +157,16 @@ class Query
      * Adds a new record.
      *
      * @param array $values The record's value.
+     *
      * @return Record A record.
+     *
+     * @throws DatabaseInternalException If the result returned by the database
+     * is invalid. A database is supposed to return the created record as an
+     * instance of the Record class. Also thrown if the database does not
+     * support record creation.
+     *
+     * @throws DatabaseQueryException If the given values are not compatible
+     * with the schema, or if the query could not be executed by the database.
      */
     public function create(array $values): Record
     {
@@ -172,28 +188,46 @@ class Query
     }
 
     /**
-     * Updates records.
+     * Updates all records selected by the query.
      *
      * @param array $values The values to update.
+     *
      * @return void
+     *
+     * @throws DatabaseInternalException If the database does not support the
+     * updating of records.
+     *
+     * @throws DatabaseQueryException If the given values are not compatible
+     * with the schema, or if the query could not be executed by the database.
      */
     public function updateAll(array $values): void
     {
-        foreach ($values as $field => $value) {
-            $fieldObj = $this->schema->field($field);
-            if ($fieldObj !== null) {
-                $this->values[$field] = $fieldObj->filter($value);
+        try {
+            foreach ($values as $field => $value) {
+                $fieldObj = $this->schema->field($field);
+                if ($fieldObj !== null) {
+                    $this->values[$field] = $fieldObj->filter($value);
+                }
             }
-        }
 
-        $this->action = self::ACTION_UPDATE;
-        $this->database->executeQuery($this);
+            $this->action = self::ACTION_UPDATE;
+            $this->database->executeQuery($this);
+        } catch (Exception $e) {
+            $msg = 'Error : ' . $e->getMessage();
+            throw new DatabaseQueryException($msg);
+        }
     }
 
     /**
      * Deletes records.
      *
      * @return void
+     *
+     * @throws DatabaseInternalException If the database does not support the
+     * deletion of records.
+     *
+     * @throws DatabaseQueryException If the query could not be executed by the
+     * database.
      */
     public function deleteAll(): void
     {
@@ -204,7 +238,7 @@ class Query
     /**
      * Returns an array representation of this query.
      *
-     * @return array The array representaion.
+     * @return array The array representation.
      */
     public function toArray(): array
     {

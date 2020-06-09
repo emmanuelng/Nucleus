@@ -12,9 +12,10 @@ use Nucleus\Router\Route;
 use Nucleus\Router\Routes\ResolvedRoute;
 
 /**
- * A resolver that uses regular expressions to resolve URLs.
- * This resolver uses the 'first-match' policy. Therefore the order in which
- * the routes are registered matters.
+ * A resolver that uses regular expressions to resolve URLs. This resolver uses
+ * the 'first-match' policy. Therefore the order in whichA resolver that uses
+ * regular expressions to resolve URLs. This resolver uses the "first match"
+ * policy. The order in which routes are registered is therefore important.
  */
 class RegexResolver implements Resolver
 {
@@ -133,13 +134,13 @@ class RegexResolver implements Resolver
 
         // Not found.
         if (!$found) {
-            throw new NotFoundException($method, $url);
+            throw new NotFoundException();
         }
 
         // Check whether the request method is allowed
         $route = $this->routes[$regex][$method] ?? null;
         if ($route === null) {
-            throw new MethodNotAllowedException($method, $url);
+            throw new MethodNotAllowedException();
         }
 
         // Extract the parameters.

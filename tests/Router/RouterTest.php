@@ -11,6 +11,9 @@ use Tests\Router\Classes\TestRequest;
 use Tests\Router\Classes\TestResponse;
 use Tests\Router\Classes\TestRoute;
 
+/**
+ * Tests the Router class.
+ */
 class RouterTest extends TestCase
 {
     /**

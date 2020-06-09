@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nucleus\Schema;
 
-use Exception;
 use Nucleus\Schema\Exceptions\InvalidValueException;
 use Nucleus\Schema\Exceptions\UnknownTypeException;
 use Nucleus\Schema\Types\BooleanType;
@@ -31,21 +30,21 @@ class Field
     private $type;
 
     /**
-     * Indicates whether this field is a list.
+     * Indicates if this field is a list.
      *
      * @var bool
      */
     private $list;
 
     /**
-     * Indicates whether this field is required.
+     * Indicates if this field is required.
      *
      * @var bool
      */
     private $required;
 
     /**
-     * Indicates whether this field must be hidden from the public.
+     * Indicates if this field must be hidden or not.
      *
      * @var bool
      */
@@ -54,8 +53,8 @@ class Field
     /**
      * Initializes the field.
      *
-     * @param string $name The field's name.
-     * @param array $array The field's array representation.
+     * @param string $name  The field's name.
+     * @param array  $array The field's array representation.
      */
     public function __construct(string $name, array $array)
     {
@@ -87,11 +86,15 @@ class Field
     }
 
     /**
-     * Checks whether a value is compatible with the field's definition and
+     * Checks whether a value is compatible with the field definition and
      * returns the filtered value.
      *
      * @param mixed $value The value to filter.
+     *
      * @return mixed The filtered value.
+     *
+     * @throws InvalidValueException If the given value is not compatible with
+     * the field definition.
      */
     public function filter($value)
     {
@@ -110,7 +113,7 @@ class Field
     }
 
     /**
-     * Returns whether this field must be hidden from the public.
+     * Returns whether this field must be hidden from the public or not.
      *
      * @return boolean True if the field is hidden, false otherwise.
      */
@@ -120,7 +123,7 @@ class Field
     }
 
     /**
-     * Returns whether this field is required or not.
+     * Indicates whether this field is mandatory or not.
      *
      * @return boolean True if the field is required, false otherwise.
      */
@@ -148,6 +151,7 @@ class Field
      * Filters a list value.
      *
      * @param mixed $value The value to filter.
+     *
      * @return mixed The filtered value.
      */
     private function filterList($value)
@@ -173,7 +177,7 @@ class Field
      * Returns the string (or array) representation of a type.
      *
      * @return string|array The string of the array, or an array if the type is
-     * a schema type.
+     *                      a schema type.
      */
     private static function typeToString($type)
     {
@@ -200,7 +204,8 @@ class Field
      * Converts a string (or an array) to a type object.
      *
      * @param string|array $type A string representing the type (or an array if
-     * it is a schema type).
+     *                           it is a schema type).
+     *
      * @return Type The corresponding type object.
      */
     private static function stringToType($type): Type

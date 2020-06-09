@@ -44,12 +44,13 @@ class Router
     /**
      * Initializes the router.
      *
-     * @param string $baseUrl The base URL. In most cases corresponds to the
-     * host's URL.
+     * @param string        $baseUrl  The base URL. In most cases corresponds
+     *                                to the host's URL.
      * @param Resolver|null $resolver The URL resolver to use. If null,
-     * initializes the router with the default resolver.
-     * @param Policy|null $policy The router's policy. If null, initializes
-     * the router with the default policy.
+     *                                initializes the router with the default
+     *                                resolver.
+     * @param Policy|null   $policy   The router's policy. If null, initializes
+     *                                the router with the default policy.
      */
     public function __construct(
         string $baseUrl = '',
@@ -75,7 +76,11 @@ class Router
      * Adds a route to the router.
      *
      * @param Route $route The route.
+     *
      * @return void
+     *
+     * @throws InvalidRouteException If the route isn't correctly configured
+     * (e.g. missing URl, missing method, etc.).
      */
     public function addRoute(Route $route): void
     {
@@ -97,8 +102,9 @@ class Router
     /**
      * Handles a request and fills a response accordingly.
      *
-     * @param Request $req The request
+     * @param Request  $req The request
      * @param Response $res The response
+     *
      * @return void
      */
     public function handle(Request $req, Response $res): void
@@ -143,6 +149,7 @@ class Router
      * for more details.
      *
      * @param Response $res The response.
+     *
      * @return void
      */
     private function handlePreflightedRequests(Response $res): void

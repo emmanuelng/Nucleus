@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Classes;
 
-use Nucleus\Database\Collection;
 use Nucleus\Database\Database;
 use Nucleus\Database\Databases\MockDatabase;
 use Nucleus\Database\Query;
-use Nucleus\Database\Record;
-use Nucleus\Database\RecordSchema;
 use Nucleus\Database\Selector;
 
 /**
@@ -42,7 +39,8 @@ class DatabaseTestFactory
      * Creates a new query.
      *
      * @param string $schema The schema on which the query must be
-     * executed.
+     *                       executed.
+     *
      * @return Query A query.
      */
     public static function query(string $schema): Query
@@ -54,7 +52,8 @@ class DatabaseTestFactory
      * Creates a new selector.
      *
      * @param string $schema The name of the schema associated to the
-     * selector.
+     *                       selector.
+     *
      * @return Selector A new selector.
      */
     public static function selector(string $schema): Selector

@@ -81,6 +81,7 @@ class Migration
      * Creates the schema.
      *
      * @param array $schemaArr The schema array representation.
+     *
      * @return Migration The next migration.
      */
     public function create(array $schemaArr = []): Migration
@@ -116,9 +117,13 @@ class Migration
     /**
      * Adds a field to the schema.
      *
-     * @param string $name The field name.
-     * @param array $fieldArr The field array representation.
+     * @param string $name     The name of the field.
+     * @param array  $fieldArr The array representation of the field.
+     *
      * @return Migration The next migration.
+     *
+     * @throws MigrationErrorException If the field is invalid or not properly
+     *                                 configured.
      */
     public function addField(string $name, array $fieldArr): Migration
     {
@@ -154,7 +159,10 @@ class Migration
      * Removes a field of the schema.
      *
      * @param string $name The name of the field to remove.
+     *
      * @return Migration The next migration.
+     *
+     * @throws MigrationErrorException If the field cannot be removed.
      */
     public function removeField(string $name): Migration
     {
@@ -178,9 +186,12 @@ class Migration
     /**
      * Modifies the definition of an existing field.
      *
-     * @param string $name The name of the field to modify.
-     * @param array $newValues The values that must be updated.
+     * @param string $name      The name of the field to modify.
+     * @param array  $newValues The values that must be updated.
+     *
      * @return Migration The next migration.
+     *
+     * @throws MigrationErrorException If the field cannot be modified.
      */
     public function modifyField(string $name, array $newValues): Migration
     {

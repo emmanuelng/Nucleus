@@ -10,8 +10,8 @@ use Nucleus\Router\Route;
 use Nucleus\Schema\Schema;
 
 /**
- * Represents a route resolved by a Resolver object. Contains the route to
- * execute and additional information found by the resolver, such as the URL
+ * Represents a route resolved by a Resolver object. Contains the route to be
+ * executed and additional information found by the resolver, such as URL
  * parameters.
  */
 class ResolvedRoute implements Route
@@ -33,8 +33,8 @@ class ResolvedRoute implements Route
     /**
      * Initializes the resolved route.
      *
-     * @param Route $route The route to execute
-     * @param array $urlParameters The URL parameters
+     * @param Route $route         The route to execute.
+     * @param array $urlParameters The URL parameters.
      */
     public function __construct(Route $route, array $urlParameters = [])
     {

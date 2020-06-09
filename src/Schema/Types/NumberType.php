@@ -28,6 +28,7 @@ class NumberType implements Type
      * Filters integer values.
      *
      * @param mixed $value A reference to the value to filter.
+     *
      * @return boolean True if the value is valid, false otherwise.
      */
     public function filterInteger(&$value): bool
@@ -52,6 +53,7 @@ class NumberType implements Type
      * Filters floating-point values.
      *
      * @param mixed $value A reference to the value to filter.
+     *
      * @return boolean True if the value is valid, false otherwise.
      */
     public function filterFloat(&$value): bool
